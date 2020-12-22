@@ -1,0 +1,308 @@
+@charset "utf-8";
+/* CSS Document */
+* {
+	margin: 0;
+	padding: 0;
+	border: 0 none;
+}
+body {
+	font-size: 12px;
+	font-weight: normal;
+	color: #333;
+	text-decoration: none;
+	background-color: #0e86e7;
+	padding: 0px;
+	font-family: "微软雅黑";
+	line-height: 25px;
+	max-width: 750px;
+	margin-top: 0px;
+	margin-right: auto;
+	margin-bottom: 0px;
+	margin-left: auto;
+}
+body img {
+	margin: 0px;
+	padding: 0px;
+	border-top-width: 0px;
+	border-right-width: 0px;
+	border-bottom-width: 0px;
+	border-left-width: 0px;
+}
+body, html {
+	height: 100%;
+}
+body li {
+	list-style-type: none;
+}
+.clear {
+	clear: both;
+}
+body a {
+	font-size: 12px;
+	color: #333333;
+	text-decoration: none;
+	font-family: "微软雅黑";
+}
+body a:hover {
+	font-size: 12px;
+	color: #0768ba;
+	text-decoration: none;
+	font-family: "微软雅黑";
+}
+body p {
+	margin: 0px;
+	padding: 0px;
+}
+body img {
+	max-width: 100%;
+}
+.bg {
+	position: fixed;
+	width: 100%;
+	top: 0;
+	z-index: -10;
+}
+.caozuo {
+	position: absolute;
+	width: 66%;
+	left: 17%;
+	top: 58%;
+}
+.caozuo p {
+	padding-top: 10px;
+}
+.caozuo img {
+	width: 100%;
+}
+.banquan {
+	text-align: center;
+	font-size: 12px;
+	color: #fff;
+	bottom: 20px;
+	position: absolute;
+	width: 100%;
+}
+
+.choose_top {
+	padding-top: 15%;
+	padding-bottom: 0px;
+	position: relative;
+}
+.back {
+	position: fixed;
+	left: 10px;
+	width: 7%;
+	top: 15px;
+}
+.logo {
+	position: absolute;
+	left: 44px;
+	width: 25%;
+	top: 20px;
+}
+.choose {
+	width: 70%;
+	margin: 0 auto;
+}
+.choose3 {
+	width: 45%;
+	margin-top: 15px;
+	margin-right: auto;
+	margin-bottom: 0;
+	margin-left: auto;
+}
+.choose2 {
+	width: 90%;
+	margin: 0 auto;
+	display: flex;
+}
+.choose2 img {
+	width: 90%;
+}
+.hbbg {
+	background-repeat: no-repeat;
+	background-position: center center;
+	background-size: cover;
+}
+.bg1 {
+	background-image: url(../images/bg1.jpg);
+}
+.haibao {
+	width: 80%;
+	margin-top: 6%;
+	margin-right: auto;
+	margin-bottom: 5%;
+	margin-left: auto;
+	box-shadow: 0 10px 10px #999;
+	padding: 0px;
+	 position:relative;
+}
+.haibao img {
+	display: block
+}
+.haibao2 {
+	width: 100%;
+	margin-top: 0%;
+	margin-right: auto;
+	margin-bottom: 0%;
+	margin-left: auto;
+	
+	padding: 0px;
+	position: relative;
+}
+.haibao2 img {
+	display: block;
+}
+.haibao_txt{ position:absolute; left:10%; bottom:14%; width:90%; text-align: left;}
+.wenan_bg,.tishi_bg {
+	width: 100%;
+	max-width: 640px;
+	z-index: 100;
+	height: 100%;
+	position: fixed;
+	top: 0;
+	background-image: url(../images/black.png);
+	background-repeat: repeat;
+	z-index: 1000;
+}
+.wenan {
+	background-image: url(../images/wenan.png);
+	background-repeat: no-repeat;
+	background-position: center top;
+	background-size: contain;
+	width: 375px;
+	height: 456px;
+	margin-top: 5%;
+	margin-right: auto;
+	margin-bottom: 0px;
+	margin-left: auto;
+	padding-top: 75px;
+	padding-right: 0px;
+	padding-bottom: 0px;
+	padding-left: 0px;
+}
+.wenanhide img {
+	width: 40%;
+}
+ul#wenanlist {
+	padding: 0px;
+	width: 84%;
+	margin-top: 0px;
+	margin-right: auto;
+	margin-bottom: 10px;
+	margin-left: auto; height: 340px; overflow-x:hidden; overflow-y:scroll;
+}
+ul#wenanlist li {
+	padding: 0%;
+	width: 100%;
+	margin-top: 10px;
+	margin-right: auto;
+	margin-bottom: 0px;
+	margin-left: auto;
+}
+ul#wenanlist li a {
+	width: 86%;
+	margin-top: 10px;
+	margin-right: auto;
+	margin-bottom: 0px;
+	margin-left: auto;
+	background-color: #ffffff;
+	border: 2px solid #cdbfec;
+	border-radius: 5px;
+	text-align: center;
+	display: block;
+	font-size: 14px;
+	padding-top: 4%;
+	padding-right: 2%;
+	padding-bottom: 4%;
+	padding-left: 2%;
+}
+.sel {
+	width: 92%!important;
+	color: #fff!important;
+	background-color: #f77e80!important
+}
+.tishi_c{
+	width: 60%;
+	background-color: #fff;
+	border-radius: 5px;
+	padding: 5%;
+	margin-top: 35%;
+	margin-right: auto;
+	margin-bottom: 0;
+	margin-left: auto;
+	text-align: center;
+	font-size: 14px;
+	line-height: 30px;
+}
+.tishi_c img{ width:60%; }
+.tishihide img{
+	width: 50%;
+	margin-top: 10px;
+}
+/*生成证书*/
+#htmlcanvas {
+	width: 300px; height:534px;
+	
+	padding: 0px;
+	margin-right: auto;
+	margin-left: auto;
+	position: relative;
+	color: #333;
+	margin-top: 30px; background-color:transparent; 
+}
+#canid {
+	padding: 0px;
+	margin-right: auto;
+	margin-left: auto;
+	width: 300px; top:30px; left:0; right:0;   z-index:100; position:absolute;
+}
+.canid2 {
+	padding: 0px;
+	margin-right: auto;
+	margin-left: auto;
+	width: 300px; top:30px; left:0; right:0;   z-index:120; position:absolute;
+}
+ @media (device-height:667px) and (-webkit-min-device-pixel-ratio:2) {
+.caozuo {
+	position: absolute;
+	width: 66%;
+	left: 17%;
+	top: 66%;
+}
+
+#htmlcanvas {
+	width: 250px;  height:445px;
+	
+}
+#canid {
+
+	width: 250px;  
+}
+.canid2 {
+
+	width: 250px; 
+}
+
+
+}
+@media (device-height:736px) and (-webkit-min-device-pixel-ratio:3.0) {
+.caozuo {
+	position: absolute;
+	width: 66%;
+	left: 17%;
+	top: 66%;
+}
+#htmlcanvas {
+	width: 267px;  height:475px;
+	
+}
+#canid {
+
+	width: 267px;  
+}
+.canid2 {
+
+	width: 267px; 
+}
+}

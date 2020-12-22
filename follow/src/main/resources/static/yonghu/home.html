@@ -1,0 +1,232 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>云南中行</title>
+    <link type="text/css" rel="stylesheet" href="css/shouji.css"/>
+    <meta name="viewport" content="width=device-width initial-scale=1.0 maximum-scale=1.0 user-scalable=yes"/>
+    <script type="text/javascript" src="js/jquery1.42.min.js"></script>
+    <script type="text/javascript" src="js/yzm.js"></script>
+    <script>
+        function GetQueryString(name) {
+            var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+            var r = window.location.search.substr(1).match(reg);
+            if (r != null) return unescape(r[2]);
+            return null;
+        }
+
+        let yh_token;
+        $(document).ready(function () {
+
+            yh_token = GetQueryString("token");
+
+            if (yh_token == null) {
+                yh_token = localStorage.getItem("yh_token", yh_token);
+                if (yh_token == null) {
+                    window.location.href = "/ynbocfollow/yonghu/index.html";
+                }
+            }
+
+            localStorage.setItem("yh_token", yh_token);
+
+            let surplusNumber;
+            $.ajax({
+                url: '/ynbocfollow/user/getLotteryNumber',
+                type: 'get',
+                dataType: 'json',
+                beforeSend: function (request) {
+                    request.setRequestHeader("X-Auth-Token", yh_token);
+                },
+                data: {},
+                success: function (data) {
+
+                    if (data.status != 200) {
+                        window.location.href = "https://wechat.zhongyunkj.cn/ynbocfollow/user/getAuthLink?from=user";
+                    }
+
+                    surplusNumber = data.data.surplusNumber;
+                    let nickname = data.data.nickname;
+                    let headImgUrl = data.data.headImgUrl;
+                    let activityMobile = data.data.activityMobile;
+
+                    if (headImgUrl != null) {
+                        $("#headImgUrl").attr("src", headImgUrl)
+                    }
+                    $("#nickname").html(nickname)
+                    $("#activityMobile").html(activityMobile)
+                    $("#surplusNumber").html(surplusNumber)
+                },
+                error: function (data) {
+                    alert(data.msg)
+                    window.location.href = "/ynbocfollow/yonghu/index.html";
+                }
+            })
+
+
+            $("#tishi").click(function () {
+                $(".tishi_bg").show();
+            });
+
+            $("#guize").click(function () {
+                $(".huodongguize_bg").show();
+            });
+
+            $("#jiangjin").click(function () {
+
+                $.ajax({
+                    url: '/ynbocfollow/user/getWechatGold',
+                    type: 'get',
+                    dataType: 'json',
+                    beforeSend: function (request) {
+                        request.setRequestHeader("X-Auth-Token", yh_token);
+                    },
+                    data: {},
+                    success: function (data) {
+
+                        if (data.status != 200) {
+                            alert(data.msg)
+                        } else {
+                            let amount = data.data.amount
+                            $("#amount").html(amount)
+                            $(".jiangjin_bg").show();
+                            window.location.href = data.data.ljjUrl;
+
+
+                        }
+                    },
+                    error: function (data) {
+                        window.location.href = "/ynbocfollow/yonghu/index.html";
+                    }
+                })
+
+            });
+
+            $(".hide").click(function () {
+                $(".tishi_bg").hide();
+                $(".jiangjin_bg").hide();
+            });
+
+            $(".close").click(function () {
+                $(".huodongguize_bg").hide();
+            });
+
+            $(".wodejiangpin").click(function () {
+                $.ajax({
+                    url: '/ynbocfollow/user/getPrizeList',
+                    type: 'get',
+                    dataType: 'json',
+                    beforeSend: function (request) {
+                        request.setRequestHeader("X-Auth-Token", yh_token);
+                    },
+                    data: {},
+                    success: function (data) {
+
+                        if (data.status != 200) {
+                            alert(data.msg)
+                            return;
+                        }
+
+                        if (data.data.count >= 1) {
+                            localStorage.setItem("prizeList", JSON.stringify(data.data))
+                            window.location.href = "/ynbocfollow/yonghu/prizeList.html";
+                        } else {
+                            window.location.href = "/ynbocfollow/yonghu/prizeEmpty.html";
+                        }
+                    },
+                    error: function (data) {
+
+                        alert("请稍后再试！")
+                    }
+                })
+            });
+
+            $(".yaoqingli").click(function () {
+                if (surplusNumber === 0) {
+                    alert("暂时没有抽奖次数,快去邀请吧！")
+                } else {
+                    window.location.href = "/ynbocfollow/yonghu/extract.html?surplusNumber=" + surplusNumber;
+                }
+            });
+
+        });</script>
+</head>
+
+<body style="background-color:#ceedf3">
+<div class="luru_top">
+    <div class="luru_top_img"><img src="images/top.png"/></div>
+    <div class="luru_top1">
+        <div class="luru_touxiang"><img id="headImgUrl" src="images/touxiang.jpg"/></div>
+        <div class="luru_txt">
+            <p><strong id="nickname">吴磊</strong></p>
+            <!--            <p><strong>云南省分行某某网点</strong></p>-->
+            <p id="activityMobile">13933198802</p>
+        </div>
+        <div class="clear"></div>
+    </div>
+</div>
+<div class="guize"><a href="javascript:void(0)" id="guize"><img src="images/huodongguize.png"/></a>
+    <p><a href="#"><img src="images/kefu.png"/></a></p>
+</div>
+<div class="step">
+    <p><a href="javascript:void(0)" id="jiangjin"><img src="images/index1.png"/></a></p>
+    <div class="yaoqingli"><a href="#"><img src="images/index2.png"/>
+        <div class="cishu" id="surplusNumber">3</div>
+    </a></div>
+    <p><a href="/ynbocfollow/yonghu/fenxiang/xuanze.html"><img src="images/index3.png"/></a></p>
+</div>
+<div class="banquan2">
+    <p>本活动由第三方公司提供技术支持，如有疑问
+    <p>可拨打客服热线：400-650-6038（限工作日9:00-18:00）
+</div>
+<div class="wodejiangpin"><a href="#"><img src="images/wodejiangpin.png"/></a></div>
+<!--弹窗3-->
+<div class="huodongguize_bg" style="display:none;">
+    <div class="huodongguize">
+        <div class="huodongguize_img"><img src="images/guize_bg.png"/></div>
+        <div class="huodongguize_c">
+            <p><strong>一、活动时间</strong></p>
+            <p>2020年12月15日至2020年12月31日</p>
+            <p><strong>二、活动对象</strong></p>
+            <p>中国银行云南省分行公众号用户</p>
+            <p><strong>三、活动内容</strong></p>
+            <p><b>1) 关注领微信支付立减金</b></p>
+            <p>活动期间首次关注中国银行云南省分行公众号的用户，
+                可领取一个1.88-88.88元随机微信支付立减金，仅限领
+                取一次。</p>
+            <p><b>2) 邀请好友翻牌抽好礼</b></p>
+            <p>活动期间每成功邀请5名客户关注公众号（邀请的好友
+                关注云南公众号并绑定手机号领取立减金视为成功关注）
+                即可参与翻牌抽奖活动，奖品设置（1-50元话费、华
+                为P40手机）非100%中奖。</p>
+            <p><strong>四、注意事项</strong></p>
+            <p>获得实物奖品的客户需点击【我的奖品】查看并填写</p>
+        </div>
+        <div class="close"><img src="images/close3.png"></div>
+    </div>
+</div>
+<!--弹窗3-->
+<!--弹窗3-->
+<div class="tishi_bg" style="display:none;">
+    <div class="tishi_img">
+        <p><strong>提示</strong></p>
+        <img src="images/smile.png">
+        <p>很遗憾，您暂时没有抽奖机会
+        <p>赶快去邀请好友参与活动吧~</p>
+    </div>
+    <div class="but_bg"><img src="images/close3.png" class="hide"></div>
+</div>
+<!--弹窗3-->
+<!--弹窗3-->
+<div class="jiangjin_bg" style="display:none;">
+    <div class="jiangjin_img">
+
+        <img src="images/jiangjin.png">
+        <div class="jiangjin_txt">￥<strong id="amount">88.88</strong></div>
+        <div class="jiangjin_but"><a href="#"><img src="images/chakan.png" class="hide"/></a></div>
+    </div>
+    <div class="but_bg"><img src="images/close3.png" class="hide"></div>
+</div>
+<!--弹窗3-->
+</body>
+</html>

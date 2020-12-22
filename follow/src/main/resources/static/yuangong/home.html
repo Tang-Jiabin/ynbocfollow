@@ -1,0 +1,199 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>云南中行</title>
+    <link type="text/css" rel="stylesheet" href="css/shouji.css"/>
+    <meta name="viewport" content="width=device-width initial-scale=1.0 maximum-scale=1.0 user-scalable=yes"/>
+    <script type="text/javascript" src="js/jquery1.42.min.js"></script>
+    <script type="text/javascript" src="js/qrcode.min.js"></script>
+    <script type="text/javascript">
+
+        function isEmpty(data) {
+            if (data === '' || data === 'undefined' || data === null) {
+                return true;
+            }
+            return false;
+        }
+
+        function GetQueryString(name) {
+            var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+            var r = window.location.search.substr(1).match(reg);
+            if (r != null) return unescape(r[2]);
+            return null;
+        }
+
+        $(document).ready(function () {
+
+            let yg_token = GetQueryString("token");
+            if (yg_token == null) {
+                yg_token = localStorage.getItem("yg_token");
+                if (yg_token == null) {
+                    window.location.href = "/ynbocfollow/yuangong/index.html";
+                }
+            }
+
+            localStorage.setItem("yg_token", yg_token);
+
+            let staffInfo = JSON.parse(localStorage.getItem("staffInfo"))
+
+            let nickname;
+            let headImgUrl;
+            let staffMobile;
+            let paramQr;
+            let branch;
+
+            console.log("token "+localStorage.getItem("yg_token"))
+
+            if (isEmpty(staffInfo)) {
+                $.ajax({
+                    url: '/ynbocfollow/staff/getStaffInfo',
+                    type: 'get',
+                    dataType: 'json',
+                    beforeSend: function (request) {
+                        request.setRequestHeader("X-Auth-Token", localStorage.getItem("yg_token"));
+                    },
+                    data: {},
+                    success: function (data) {
+
+                        if (data.status != 200) {
+                            alert(data.msg)
+                            return;
+                        }
+
+                        nickname = data.data.nickname;
+                        headImgUrl = data.data.headImgUrl;
+                        staffMobile = data.data.staffMobile;
+                        branch = data.data.branch;
+                        paramQr = data.data.paramQr;
+
+                        if (headImgUrl != null) {
+                            $("#headImgUrl").attr("src", headImgUrl)
+                        }
+
+                        if (paramQr != null) {
+                            $("#paramQr").attr("src", paramQr)
+                        }
+
+                        $("#nickname").html(nickname)
+                        $("#staffMobile").html(staffMobile)
+                        $("#branch").html(branch)
+
+                        let payQr = "http://wechat.zhongyunkj.cn/ynbocfollow/user/getAuthLink?from=pay&staffPhone=" + staffMobile + "";
+
+                        let qrcode = new QRCode(document.getElementById("payQr"), {
+                            width: 150,
+                            height: 150
+                        });
+                        qrcode.makeCode(payQr)
+
+                        let staffInfo = {
+                            'nickname': nickname,
+                            'headImgUrl': headImgUrl,
+                            'staffMobile': staffMobile,
+                            'branch': branch,
+                            'paramQr': paramQr
+                        }
+                        localStorage.setItem("staffInfo", JSON.stringify(staffInfo));
+                    },
+                    error: function (data) {
+                        alert(data.msg)
+                    }
+                })
+            } else {
+                nickname = staffInfo.nickname;
+                headImgUrl = staffInfo.headImgUrl;
+                staffMobile = staffInfo.staffMobile;
+                paramQr = staffInfo.paramQr;
+                branch = staffInfo.branch;
+
+                if (headImgUrl != null) {
+                    $("#headImgUrl").attr("src", headImgUrl)
+                }
+
+                if (paramQr != null) {
+                    $("#paramQr").attr("src", paramQr)
+                }
+
+                $("#nickname").html(nickname)
+                $("#staffMobile").html(staffMobile)
+                $("#branch").html(branch)
+
+                let payQr = "http://wechat.zhongyunkj.cn/ynbocfollow/user/getAuthLink?from=pay&staffPhone=" + staffMobile + "";
+
+                let qrcode = new QRCode(document.getElementById("payQr"), {
+                    width: 150,
+                    height: 150
+                });
+                qrcode.makeCode(payQr)
+            }
+
+
+            $("#step1").click(function () {
+                $(".step1_bg").show();
+            });
+            $("#step2").click(function () {
+                $(".step2_bg").show();
+            });
+            $("#step3").click(function () {
+                $(".step3_bg").show();
+            });
+            $(".hide").click(function () {
+                $(".step1_bg").hide();
+                $(".step2_bg").hide();
+                $(".step3_bg").hide();
+
+            });
+
+        });</script>
+</head>
+
+<body style="background-color:#cdedf3">
+<div class="luru_top">
+    <div class="luru_top_img"><img src="images/top.png"/></div>
+    <div class="luru_top1">
+        <div class="luru_touxiang"><img id="headImgUrl" src="images/touxiang.jpg"/></div>
+        <div class="luru_txt">
+
+
+            <p><strong id="nickname">吴磊</strong></p>
+                        <p><strong id="branch">云南省分行某某网点</strong></p>
+            <p id="staffMobile">13933198802</p>
+        </div>
+        <div class="clear"></div>
+    </div>
+
+</div>
+<div class="menu"><a href="./mingxi.html"><img src="images/shujumingxi.png"/></a><a href="./paihang.html"><img
+        src="images/paihangbang.png"/></a>
+</div>
+<div class="step">
+    <p><a href="javascript:void(0)" id="step1"><img src="images/step1.png"/></a></p>
+    <p><a href="javascript:void(0)" id="step2"><img src="images/step2.png"/></a></p>
+    <p><a href="javascript:void(0)" id="step3"><img src="images/step3.png"/></a></p>
+</div>
+
+<!--弹窗1-->
+<div class="step1_bg" style="display:none;">
+    <div class="step_img"><img src="images/erweima.png">
+        <p>扫码下载手机银行APP</p></div>
+    <div class="but_bg"><img src="images/close3.png" class="hide"></div>
+</div>
+<!--弹窗1-->
+<!--弹窗2-->
+<div class="step2_bg" style="display:none;">
+    <div id="payQr" class="step_img">
+        <p>扫描完成手机银行支付</p></div>
+    <div class="but_bg"><img src="images/close3.png" class="hide"></div>
+</div>
+<!--弹窗2-->
+<!--弹窗3-->
+<div class="step3_bg" style="display:none;">
+    <div class="step_img"><img id="paramQr" src="images/erweima.png">
+        <p>扫描登录领取奖励</p></div>
+    <div class="but_bg"><img src="images/close3.png" class="hide"></div>
+</div>
+<!--弹窗3-->
+</body>
+</html>

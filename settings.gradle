@@ -1,0 +1,4 @@
+rootProject.name = 'boc_yn'
+include 'common'
+include 'wechat'
+include 'follow'

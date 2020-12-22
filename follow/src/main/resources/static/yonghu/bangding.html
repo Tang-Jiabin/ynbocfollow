@@ -1,0 +1,130 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>云南中行</title>
+    <link type="text/css" rel="stylesheet" href="css/shouji.css"/>
+    <meta name="viewport" content="width=device-width initial-scale=1.0 maximum-scale=1.0 user-scalable=yes"/>
+    <script type="text/javascript" src="js/jquery1.42.min.js"></script>
+    <script type="text/javascript" src="js/yzm.js"></script>
+    <script>
+        function GetQueryString(name) {
+            var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+            var r = window.location.search.substr(1).match(reg);
+            if (r != null) return unescape(r[2]);
+            return null;
+        }
+
+        $(document).ready(function () {
+            $("#tishi").click(function () {
+
+                let phone = $("#phone2").val();
+                let code = $("#code1").val();
+                let sid = GetQueryString("sid");
+                if (sid == null) {
+                    sid = 0;
+                }
+
+                $.ajax({
+                    url: '/ynbocfollow/user/bindMobile',
+                    type: 'get',
+                    dataType: 'json',
+                    data: {'phone': phone, 'code': code, 'sid': sid},
+                    success: function (data) {
+                        console.log("s:" + data.msg)
+                        console.log("s:" + data.data)
+                        if (data.status != 200) {
+                            alert(data.msg)
+                        } else {
+                            window.location.href = "https://wechat.zhongyunkj.cn/ynbocfollow/yonghu/home.html?yh_token="+data.data;
+                        }
+                    },
+                    error: function (data) {
+                        console.log("e:" + data.msg)
+                        console.log("e:" + data.data)
+                    }
+                })
+            });
+
+            $("#guize").click(function () {
+                $(".huodongguize_bg").show();
+            });
+
+            $(".hide").click(function () {
+                $(".tishi_bg").hide();
+
+            });
+            $(".close").click(function () {
+                $(".huodongguize_bg").hide();
+
+            });
+
+        });</script>
+</head>
+
+<body>
+<div class="login_banner"><img src="images/index_03.jpg"/></div>
+<div class="guize"><a href="javascript:void(0)" id="guize"><img src="images/huodongguize.png"/></a></div>
+<div class="banquan">
+    <p>本活动由第三方公司提供技术支持，如有疑问
+    <p>可拨打客服热线：400-650-6038（限工作日9:00-18:00）
+</div>
+<div class="biaodan">
+    <div class="biaodan1">
+        <input type="text" value="请输入手机号" class="txt1" id="phone2"
+               onfocus="if(this.value==defaultValue) {this.value='';this.type='text'}"
+               onblur="if(!value) {value=defaultValue; this.type='text';}"/>
+    </div>
+    <div class="biaodan2"><span>
+    <input id="btnSendCode2" type="button" class="yanzhengma" value="发送验证码" onClick="sendMessage2()"/>
+    </span>
+        <input type="text" value="请输入验证码" class="txt1" id="code1"
+               onfocus="if(this.value==defaultValue) {this.value='';this.type='text'}"
+               onblur="if(!value) {value=defaultValue; this.type='text';}"/>
+    </div>
+    <div class="clear"></div>
+    <div class="biaodan3">
+        <input name="" type="button" class="but1" id="tishi"/>
+    </div>
+</div>
+<!--弹窗3-->
+<div class="huodongguize_bg" style="display:none;">
+    <div class="huodongguize">
+        <div class="huodongguize_img"><img src="images/guize_bg.png"/></div>
+        <div class="huodongguize_c">
+            <p><strong>一、活动时间</strong></p>
+            <p>2020年12月15日至2020年12月31日</p>
+            <p><strong>二、活动对象</strong></p>
+            <p>中国银行云南省分行公众号用户</p>
+            <p><strong>三、活动内容</strong></p>
+            <p><b>1) 关注领微信支付立减金</b></p>
+            <p>活动期间首次关注中国银行云南省分行公众号的用户，
+                可领取一个1.88-88.88元随机微信支付立减金，仅限领
+                取一次。</p>
+            <p><b>2) 邀请好友翻牌抽好礼</b></p>
+            <p>活动期间每成功邀请5名客户关注公众号（邀请的好友
+                关注云南公众号并绑定手机号领取立减金视为成功关注）
+                即可参与翻牌抽奖活动，奖品设置（1-50元话费、华
+                为P40手机）非100%中奖。</p>
+            <p><strong>四、注意事项</strong></p>
+            <p>获得实物奖品的客户需点击【我的奖品】查看并填写</p>
+        </div>
+        <div class="close"><img src="images/close3.png"></div>
+    </div>
+</div>
+<!--弹窗3-->
+<!--弹窗3-->
+<!--<div class="tishi_bg" style="display:none;">-->
+<!--    <div class="tishi_img">-->
+
+<!--        <img src="images/smile.png">-->
+<!--        <p>很遗憾，您暂时没有抽奖机会-->
+
+<!--        <p>赶快去邀请好友参与活动吧~</p>-->
+<!--    </div>-->
+<!--    <div class="but_bg"><img src="images/close3.png" class="hide"></div>-->
+<!--</div>-->
+<!--弹窗3-->
+</body>
+</html>

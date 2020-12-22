@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>云南中行</title>
+    <meta name="viewport" content="width=device-width initial-scale=1.0 maximum-scale=1.0 user-scalable=yes"/>
+    <script type="text/javascript" src="js/jquery1.42.min.js"></script>
+</head>
+<body>
+<form id="form" name="form" method="post" action="">
+
+    <input id="merchantNo" type="hidden" name="merchantNo" value=""><br/>
+
+    <input id="payType" type="hidden" name="payType" value=""><br/>
+
+    <input id="orderNo" type="hidden" name="orderNo" value=""><br/>
+
+    <input id="curCode" type="hidden" name="curCode" value=""><br/>
+
+    <input id="orderAmount" type="hidden" name="orderAmount" value=""><br/>
+
+    <input id="orderTime" type="hidden" name="orderTime" value=""><br/>
+
+    <input id="orderNote" type="hidden" name="orderNote" value=""><br/>
+
+    <input id="orderUrl" type="hidden" name="orderUrl" value=""><br/>
+
+    <input id="signData" type="hidden" name="signData" value=""><br/>
+</form>
+<script type="text/javascript">
+
+    function GetQueryString(name) {
+        var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+        var r = window.location.search.substr(1).match(reg);
+        if (r != null) return unescape(r[2]);
+        return null;
+    }
+
+    $(function (){
+
+        let code = GetQueryString('code')
+        let state = GetQueryString('state')
+        $.ajax({
+            url: '/ynbocfollow/staff/getPayParam',
+            type: 'get',
+            dataType: 'json',
+            data: {'code':code,'state':state},
+            success: function (data) {
+                if(data.status === 200){
+                    $('#form').attr('action',data.data.action)
+                    $('#merchantNo').attr('value',data.data.merchantNo)
+                    $('#payType').attr('value',data.data.payType)
+                    $('#orderNo').attr('value',data.data.orderNo)
+                    $('#curCode').attr('value',data.data.curCode)
+                    $('#orderAmount').attr('value',data.data.orderAmount)
+                    $('#orderTime').attr('value',data.data.orderTime)
+                    $('#orderNote').attr('value',data.data.orderNote)
+                    $('#orderUrl').attr('value',data.data.orderUrl)
+                    $('#signData').attr('value',data.data.signData)
+                    document.form.submit();
+                }else {
+                    alert(data.msg)
+                }
+
+
+            },
+            error: function (data) {
+                alert("系统繁忙，请稍后再试")
+            }
+        })
+
+
+
+    })
+
+</script>
+</body>
+</html>

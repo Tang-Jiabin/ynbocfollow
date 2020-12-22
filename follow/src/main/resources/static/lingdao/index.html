@@ -1,0 +1,613 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>云南中行晋升活动</title>
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"/>
+    <link href="css/css.css" rel="stylesheet" type="text/css">
+    <script type="text/javascript" src="js/jquery-1.9.1.min.js"></script>
+    <!--    <script type="text/javascript" src="js/tab.js"></script>-->
+</head>
+<body>
+
+<div class="top">
+    <p><img src="images/index_02.jpg"></p>
+    <p><img src="images/index_04.jpg"></p>
+
+</div>
+<div class="tab">
+    <a href="javascript:void(0)" class="sel" id="ps01" onclick="pros_hover(1)">总数</a>
+    <a href="javascript:void(0)" id="ps02" onclick="pros_hover(2)">今天</a>
+    <a href="javascript:void(0)" id="ps03" onclick="pros_hover(3)">昨天</a>
+    <a href="javascript:void(0)" id="ps04" onclick="pros_hover(4)">近7天</a>
+    <a href="javascript:void(0)" id="ps05" onclick="pros_hover(5)">近30天</a>
+    <div class="clear"></div>
+</div>
+<div id="pros01">
+    <div class="map">
+        <!--说明:英文地名的样式为绝对定位。top12345为红点大小标记-->
+        <div class="map_img"><img src="images/index_05.jpg"></div>
+        <div onclick="jumDetailed(this)"  id="pr" class="mark puer top2"><p><span><strong>普洱</strong></span></p>
+            <p style="display: inline" id="pr-1">1</p><span>/</span>
+            <p style="display: inline" id="pr-2">1</p>
+        </div>
+        <div onclick="jumDetailed(this)" id="cx" class="mark chuxiong top2"><p><span><strong>楚雄</strong></span></p>
+            <p style="display: inline" id="cx-1">1</p><span>/</span>
+            <p style="display: inline" id="cx-2">1</p>
+        </div>
+        <div onclick="jumDetailed(this)" id="hh" class="mark honghe top2"><p><span><strong>红河</strong></span></p>
+            <p style="display: inline" id="hh-1">1</p><span>/</span>
+            <p style="display: inline" id="hh-2">1</p>
+        </div>
+        <div onclick="jumDetailed(this)" id="dl"  class="mark dali top2"><p><span><strong>大理</strong></span></p>
+            <p style="display: inline" id="dl-1">1</p><span>/</span>
+            <p style="display: inline" id="dl-2">1</p>
+        </div>
+<!--        <div onclick="jumDetailed(this)" id="km"  class="mark kunming top2"><p><span><strong>昆明</strong></span></p>-->
+<!--            <p style="display: inline" id="km-1">1</p><span>/</span>-->
+<!--            <p style="display: inline" id="km-2">1</p>-->
+<!--        </div>-->
+
+        <div onclick="jumDetailed(this)" id="dq"  class="mark diqing top2"><p><span><strong>迪庆</strong></span></p>
+            <p style="display: inline" id="dq-1">1</p><span>/</span>
+            <p style="display: inline" id="dq-2">1</p>
+        </div>
+        <div onclick="jumDetailed(this)" id="nj"  class="mark nujiang top2"><p><span><strong>怒江</strong></span></p>
+            <p style="display: inline" id="nj-1">1</p><span>/</span>
+            <p style="display: inline" id="nj-2">1</p>
+        </div>
+        <div onclick="jumDetailed(this)" id="lj"  class="mark lijiang top2"><p><span><strong>丽江</strong></span></p>
+            <p style="display: inline" id="lj-1">1</p><span>/</span>
+            <p style="display: inline" id="lj-2">1</p>
+        </div>
+        <div onclick="jumDetailed(this)" id="st"  class="mark shaotong top2"><p><span><strong>邵通</strong></span></p>
+            <p style="display: inline" id="st-1">1</p><span>/</span>
+            <p style="display: inline" id="st-2">1</p>
+        </div>
+        <div onclick="jumDetailed(this)" id="qj"  class="mark qujing top2"><p><span><strong>曲靖</strong></span></p>
+            <p style="display: inline" id="qj-1">1</p><span>/</span>
+            <p style="display: inline" id="qj-2">1</p>
+        </div>
+
+        <div onclick="jumDetailed(this)" id="dh"  class="mark dehong top2"><p><span><strong>德宏</strong></span></p>
+            <p style="display: inline" id="dh-1">1</p><span>/</span>
+            <p style="display: inline" id="dh-2">1</p>
+        </div>
+        <div onclick="jumDetailed(this)" id="bs"  class="mark baoshan top2"><p><span><strong>保山</strong></span></p>
+            <p style="display: inline" id="bs-1">1</p><span>/</span>
+            <p style="display: inline" id="bs-2">1</p>
+        </div>
+        <div onclick="jumDetailed(this)" id="lc"  class="mark lincang top2"><p><span><strong>临沧</strong></span></p>
+            <p style="display: inline" id="lc-1">1</p><span>/</span>
+            <p style="display: inline" id="lc-2">1</p>
+        </div>
+        <div onclick="jumDetailed(this)" id="yx"  class="mark yuxi top2"><p><span><strong>玉溪</strong></span></p>
+            <p style="display: inline" id="yx-1">1</p><span>/</span>
+            <p style="display: inline" id="yx-2">1</p>
+        </div>
+        <div onclick="jumDetailed(this)" id="ws"  class="mark wenshan top2"><p><span><strong>文山</strong></span></p>
+            <p style="display: inline" id="ws-1">1</p><span>/</span>
+            <p style="display: inline" id="ws-2">1</p>
+        </div>
+
+        <div onclick="jumDetailed(this)" id="yy"  class="mark simao top2"><p><span><strong>省分行营业部</strong></span></p>
+            <p style="display: inline" id="sm-1">1</p><span>/</span>
+            <p style="display: inline" id="sm-2">1</p>
+        </div>
+        <div onclick="jumDetailed(this)" id="xs"  class="mark xishuangbanna top2"><p><span><strong>西双版纳</strong></span></p>
+            <p style="display: inline" id="xs-1">1</p><span>/</span>
+            <p style="display: inline" id="xs-2">1</p>
+        </div>
+
+
+    </div>
+    <div class="table">
+        <table width="100%" border="0" class="tb" id="tb-1">
+
+        </table>
+    </div>
+</div>
+<div class="top">
+    <p><img src="images/index_07.jpg"></p>
+</div>
+<div class="table">
+    <table width="100%" border="0" class="tb" id="tb-2">
+
+    </table>
+</div>
+<div class="top">
+    <p><img src="images/index_09.jpg"></p>
+</div>
+<div class="table">
+    <table width="100%" border="0" class="tb" id="tb-3">
+        <tr>
+            <td bgcolor="#43abee" style="color:#fff">分行名称</td>
+            <td bgcolor="#43abee" style="color:#fff">黄牌网点数量</td>
+        </tr>
+        <tr>
+            <td>普洱</td>
+            <td>5</td>
+        </tr>
+        <tr>
+            <td>楚雄</td>
+            <td>0</td>
+        </tr>
+        <tr>
+            <td>红河</td>
+            <td>2</td>
+        </tr>
+        <tr>
+            <td>东风支行</td>
+            <td>0</td>
+        </tr>
+        <tr>
+            <td>东风支行</td>
+            <td>2</td>
+        </tr>
+        <tr>
+            <td>东风支行</td>
+            <td>2</td>
+        </tr>
+        <tr>
+            <td>东风支行</td>
+            <td>2</td>
+        </tr>
+        <tr>
+            <td>东风支行</td>
+            <td>2</td>
+        </tr>
+        <tr>
+            <td>东风支行</td>
+            <td>2</td>
+        </tr>
+    </table>
+</div>
+<div class="top">
+    <p><img src="images/index_11.jpg"></p>
+</div>
+<div class="table">
+    <table width="100%" border="0" class="tb" id="tb-4">
+        <tr>
+            <td bgcolor="#43abee" style="color:#fff">分行</td>
+            <td bgcolor="#43abee" style="color:#fff">网点数</td>
+            <td bgcolor="#43abee" style="color:#fff">使用系统<br>
+                网点数
+            </td>
+            <td bgcolor="#43abee" style="color:#fff">未使用系<br>
+                统网点数
+            </td>
+            <td bgcolor="#43abee" style="color:#fff">使用系统<br>
+                网点数比例
+            </td>
+        </tr>
+        <tr>
+            <td>普洱5</td>
+            <td>12</td>
+            <td>10</td>
+            <td>2</td>
+            <td>83.3%</td>
+        </tr>
+        <tr>
+            <td>楚雄</td>
+            <td>7</td>
+            <td>7</td>
+            <td>0</td>
+            <td>100%</td>
+        </tr>
+        <tr>
+            <td>红河</td>
+            <td>8</td>
+            <td>8</td>
+            <td>0</td>
+            <td>100%</td>
+        </tr>
+        <tr>
+            <td>东风支行</td>
+            <td>1</td>
+            <td>1</td>
+            <td>0</td>
+            <td>100%</td>
+        </tr>
+        <tr>
+            <td>东风支行</td>
+            <td>1</td>
+            <td>1</td>
+            <td>0</td>
+            <td>100%</td>
+        </tr>
+        <tr>
+            <td>东风支行</td>
+            <td>1</td>
+            <td>1</td>
+            <td>0</td>
+            <td>100%</td>
+        </tr>
+        <tr>
+            <td>东风支行</td>
+            <td>1</td>
+            <td>1</td>
+            <td>0</td>
+            <td>100%</td>
+        </tr>
+        <tr>
+            <td>东风支行</td>
+            <td>1</td>
+            <td>1</td>
+            <td>0</td>
+            <td>100%</td>
+        </tr>
+        <tr>
+            <td>东风支行</td>
+            <td>1</td>
+            <td>1</td>
+            <td>0</td>
+            <td>100%</td>
+        </tr>
+    </table>
+</div>
+
+
+<script type="text/javascript">
+
+
+    $(function () {
+
+        init()
+
+        getTodayStar()
+
+    })
+
+    function jumDetailed(a){
+        let name = a.getAttribute('data')
+
+        window.location.href="/ynbocfollow/lingdao/detailed.html?name="+encodeURI(encodeURI(name));
+    }
+
+    function getTodayStar() {
+        $.ajax({
+            url: '/ynbocfollow/leader/getTodayStar',
+            type: 'get',
+            dataType: 'json',
+            data: {},
+            success: function (data) {
+
+                let dataList = data.data;
+
+                let trhead = '<tr>' +
+                    '<td bgcolor="#43abee" style="color:#fff">网点名称</td>' +
+                    '<td bgcolor="#43abee" style="color:#fff">全量客户数</td>' +
+                    '</tr>'
+
+                let trbody;
+
+                for (let i = 0; i < 10; i++) {
+
+                    let branch = dataList[i].branch;
+                    let activation = dataList[i].activation;
+
+                    if (i < 10) {
+                        trbody = trbody + '<tr>' +
+                            '<td>' + branch + '</td>' +
+                            '<td>' + activation + '</td>' +
+                            '</tr>';
+                    }
+
+                }
+
+                $('#tb-2').html(trhead + trbody);
+
+            },
+            error: function (data) {
+                alert("系统繁忙，请稍后再试")
+            }
+        })
+    }
+
+    function init() {
+
+        $.ajax({
+            url: '/ynbocfollow/leader/getBranchInfo',
+            type: 'get',
+            dataType: 'json',
+            data: {'index': 1},
+            success: function (data) {
+
+                let dataList = data.data;
+
+                initData(dataList)
+
+                warningData(dataList);
+
+                getUtilization()
+
+            },
+            error: function (data) {
+                alert("系统繁忙，请稍后再试")
+            }
+        })
+
+    }
+
+    function initData(dataList) {
+        let trhead = '<tr>' +
+            '<td bgcolor="#43abee" style="color:#fff"> 排行</td>' +
+            '<td bgcolor="#43abee" style="color:#fff">地区</td>' +
+            '<td bgcolor="#43abee" style="color:#fff">新激活<br>客户数</td>' +
+            '<td bgcolor="#43abee" style="color:#fff">新激活<br>效能</td>' +
+            '<td bgcolor="#43abee" style="color:#fff">二维码<br>支付<br>客户数</td>' +
+            '<td bgcolor="#43abee" style="color:#fff">二维码<br>效能</td>' +
+            '<td bgcolor="#43abee" style="color:#fff">官微<br>领奖率</td>' +
+            '</tr>'
+
+        let trbody;
+
+        for (let i = 0; i < dataList.length; i++) {
+
+            let branch = dataList[i].branch;
+            let activation = dataList[i].activation;
+            let activationEffect = dataList[i].activationEffect;
+            let pay = dataList[i].pay;
+            let payEffect = dataList[i].payEffect;
+            let receive = dataList[i].receive;
+            let receiveEffect = dataList[i].receiveEffect;
+
+            mapData(branch, activation, activationEffect)
+
+
+            trbody = trbody + '<tr onclick="jumDetailed(this)" data="'+branch+'">' +
+                '<td>' + (i + 1) + '</td>' +
+                '<td>' + branch + '</td>' +
+                '<td>' + activation + '</td>' +
+                '<td>' + activationEffect + '</td>' +
+                '<td>' + pay + '</td>' +
+                '<td>' + payEffect + '</td>' +
+                '<td>' + receiveEffect + '%</td>' +
+                '</tr>';
+
+
+        }
+
+        $('#tb-1').html(trhead + trbody);
+
+    }
+
+    function warningData(dataList) {
+
+        let lisLen = dataList.length;
+
+
+        let trhead = '<tr>' +
+            '<td bgcolor="#43abee" style="color:#fff">分行名称</td>' +
+            '<td bgcolor="#43abee" style="color:#fff">黄牌网点数量</td>' +
+            '</tr>'
+
+        let trbody;
+
+        if (lisLen > 0) {
+            for (let i = lisLen - 1; i >= 0; i--) {
+                if((lisLen - i)<10){
+                    let branch = dataList[i].branch;
+
+                    let supportNum = dataList[i].supportNum;
+
+                    trbody = trbody + '<tr>' +
+                        '<td>' + branch + '</td>' +
+                        '<td>' + supportNum + '</td>' +
+                        '</tr>'
+                }
+            }
+        }
+        $('#tb-3').html(trhead + trbody);
+    }
+
+    function getUtilization(){
+
+        $.ajax({
+            url: '/ynbocfollow/leader/getUtilization',
+            type: 'get',
+            dataType: 'json',
+            data: {},
+            success: function (data) {
+
+                let dataList = data.data;
+
+                let trhead = '<tr>' +
+                    '<td bgcolor="#43abee" style="color:#fff">分行</td>' +
+                    '<td bgcolor="#43abee" style="color:#fff">网点数</td>' +
+                    '<td bgcolor="#43abee" style="color:#fff">使用系统<br>网点数</td>' +
+                    '<td bgcolor="#43abee" style="color:#fff">未使用系<br>统网点数</td>' +
+                    '<td bgcolor="#43abee" style="color:#fff">使用系统<br>网点数比例</td>' +
+                    '</tr>'
+
+                let trbody;
+
+                for (let i = 0; i < dataList.length; i++) {
+
+                    let branch = dataList[i].branchName;
+                    let supportNum = dataList[i].supportNum;
+                    let use = dataList[i].use;
+                    let notUse = dataList[i].notUse;
+                    let utilization = dataList[i].utilization;
+
+
+                    trbody = trbody + '<tr>' +
+                        '<td>'+branch+'</td>' +
+                        '<td>'+supportNum+'</td>' +
+                        '<td>'+use+'</td>' +
+                        '<td>'+notUse+'</td>' +
+                        '<td>'+utilization+'%</td>' +
+                        '</tr>';
+
+
+                }
+
+                $('#tb-4').html(trhead + trbody);
+
+            },
+            error: function (data) {
+                alert("系统繁忙，请稍后再试")
+            }
+        })
+
+    }
+
+    function pros_hover(index) {
+
+        for (let i = 1; i <= 5; i++) {
+            if (index === i) {
+                $('#ps0' + i).attr('class', 'sel');
+            } else {
+                $('#ps0' + i).attr('class', '');
+            }
+        }
+
+        $.ajax({
+            url: '/ynbocfollow/leader/getBranchInfo',
+            type: 'get',
+            dataType: 'json',
+            data: {'index': index},
+            success: function (data) {
+
+                let dataList = data.data;
+
+                let trhead = '<tr>' +
+                    '<td bgcolor="#43abee" style="color:#fff"> 排行</td>' +
+                    '<td bgcolor="#43abee" style="color:#fff">地区</td>' +
+                    '<td bgcolor="#43abee" style="color:#fff">新激活<br>客户数</td>' +
+                    '<td bgcolor="#43abee" style="color:#fff">新激活<br>效能</td>' +
+                    '<td bgcolor="#43abee" style="color:#fff">二维码<br>支付<br>客户数</td>' +
+                    '<td bgcolor="#43abee" style="color:#fff">二维码<br>效能</td>' +
+                    '<td bgcolor="#43abee" style="color:#fff">官微<br>领奖率</td>' +
+                    '</tr>'
+
+                let trbody;
+
+                for (let i = 0; i < dataList.length; i++) {
+
+                    let branch = dataList[i].branch;
+                    let activation = dataList[i].activation;
+                    let activationEffect = dataList[i].activationEffect;
+                    let pay = dataList[i].pay;
+                    let payEffect = dataList[i].payEffect;
+                    let receive = dataList[i].receive;
+                    let receiveEffect = dataList[i].receiveEffect;
+
+                    mapData(branch, activation, activationEffect)
+
+                    if (i < 10) {
+                        trbody = trbody + '<tr>' +
+                            '<td>' + (i + 1) + '</td>' +
+                            '<td>' + branch + '</td>' +
+                            '<td>' + activation + '</td>' +
+                            '<td>' + activationEffect + '</td>' +
+                            '<td>' + pay + '</td>' +
+                            '<td>' + payEffect + '</td>' +
+                            '<td>' + receiveEffect + '%</td>' +
+                            '</tr>';
+                    }
+
+                }
+
+                $('#tb-1').html(trhead + trbody);
+
+            },
+            error: function (data) {
+                alert("系统繁忙，请稍后再试")
+            }
+        })
+    }
+
+    function mapData(branch, activation, activationEffect) {
+        if (branch.indexOf('普洱') !== -1) {
+            $('#pr').attr('data',branch);
+            $('#pr-1').html(activation);
+            $('#pr-2').html(activationEffect);
+        }
+        if (branch.indexOf('楚雄') !== -1) {
+            $('#cx').attr('data',branch);
+            $('#cx-1').html(activation);
+            $('#cx-2').html(activationEffect);
+        }
+        if (branch.indexOf('红河') !== -1) {
+            $('#hh').attr('data',branch);
+            $('#hh-1').html(activation);
+            $('#hh-2').html(activationEffect);
+        }
+        if (branch.indexOf('大理') !== -1) {
+            $('#dl').attr('data',branch);
+            $('#dl-1').html(activation);
+            $('#dl-2').html(activationEffect);
+        }
+        if (branch.indexOf('昆明') !== -1) {
+            $('#km').attr('data',branch);
+            $('#km-1').html(activation);
+            $('#km-2').html(activationEffect);
+        }
+        if (branch.indexOf('迪庆') !== -1) {
+            $('#dq').attr('data',branch);
+            $('#dq-1').html(activation);
+            $('#dq-2').html(activationEffect);
+        }
+        if (branch.indexOf('怒江') !== -1) {
+            $('#nj').attr('data',branch);
+            $('#nj-1').html(activation);
+            $('#nj-2').html(activationEffect);
+        }
+        if (branch.indexOf('丽江') !== -1) {
+            $('#lj').attr('data',branch);
+            $('#lj-1').html(activation);
+            $('#lj-2').html(activationEffect);
+        }
+        if (branch.indexOf('昭通') !== -1) {
+            $('#st').attr('data',branch);
+            $('#st-1').html(activation);
+            $('#st-2').html(activationEffect);
+        }
+        if (branch.indexOf('曲靖') !== -1) {
+            $('#qj').attr('data',branch);
+            $('#qj-1').html(activation);
+            $('#qj-2').html(activationEffect);
+        }
+        if (branch.indexOf('德宏') !== -1) {
+            $('#dh').attr('data',branch);
+            $('#dh-1').html(activation);
+            $('#dh-2').html(activationEffect);
+        }
+        if (branch.indexOf('保山') !== -1) {
+            $('#bs').attr('data',branch);
+            $('#bs-1').html(activation);
+            $('#bs-2').html(activationEffect);
+        }
+        if (branch.indexOf('临沧') !== -1) {
+            $('#lc').attr('data',branch);
+            $('#lc-1').html(activation);
+            $('#lc-2').html(activationEffect);
+        }
+        if (branch.indexOf('玉溪') !== -1) {
+            $('#yx').attr('data',branch);
+            $('#yx-1').html(activation);
+            $('#yx-2').html(activationEffect);
+        }
+        if (branch.indexOf('文山') !== -1) {
+            $('#ws').attr('data',branch);
+            $('#ws-1').html(activation);
+            $('#ws-2').html(activationEffect);
+        }
+        if (branch.indexOf('省分行营业部') !== -1) {
+            $('#yy').attr('data',branch);
+            $('#yy-1').html(activation);
+            $('#yy-2').html(activationEffect);
+        }
+        if (branch.indexOf('西双版纳') !== -1) {
+            $('#xs').attr('data',branch);
+            $('#xs-1').html(activation);
+            $('#xs-2').html(activationEffect);
+        }
+    }
+
+</script>
+
+</body>
+</html>

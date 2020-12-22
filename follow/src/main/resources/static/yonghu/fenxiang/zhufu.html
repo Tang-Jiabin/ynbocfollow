@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>选择祝福语</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1">
+    <link type="text/css" rel="stylesheet" href="css/shouji.css"/>
+    <script type="text/javascript" src="js/jquery-1.9.1.min.js"></script>
+    <script type="text/javascript" src="js/js.js"></script>
+    <script>
+
+        function GetQueryString(name) {
+            var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+            var r = window.location.search.substr(1).match(reg);
+            if (r != null) return unescape(r[2]);
+            return null;
+        }
+
+        $(document).ready(function () {
+
+            let imgUrl = GetQueryString("img");
+
+            let index = 1;
+
+            $('#imgUrl').attr('src', imgUrl)
+
+            $(".wenanshow").click(function () {
+                $(".wenan_bg").show();
+            });
+            $(".wenanhide").click(function () {
+                $(".wenan_bg").hide();
+            });
+
+            $("#wenanlist").on("click", "li", function () {
+                index = $(this).index() + 1;
+                console.log(index);
+            });
+
+            $('#queding').click(function () {
+                console.log("确定")
+                console.log("img: " + imgUrl)
+                console.log("index: " + index)
+                window.location.href = "/ynbocfollow/yonghu/fenxiang/shengcheng.html?img=" + imgUrl + "&index=" + index;
+            })
+
+
+        });</script>
+</head>
+<!--海报图片和背景图片同时更换，海报图片为haibao1-5.jpg，背景图片为bg1-5.jpg，一一对应的-->
+<body class="hbbg" style="background-image:url(images/bg1.jpg); overflow:hidden;">
+<div class="haibao"><img id="imgUrl" src="images/haibao1.jpg"></div>
+<div class="choose2"><a href="#"><img src="images/choose2.png"></a><a href="javascript:void(0)" class="wenanshow"><img
+        src="images/choose3.png"></a></div>
+<!--文案提示-->
+<div class="wenan_bg" style="display:none;">
+    <div class="wenan">
+        <ul id="wenanlist">
+            <li>
+                <a href="javascript:void(0)">
+                    为了心中的美好<br>
+                    不妥协<br>
+                    直到变老
+                </a>
+            </li>
+            <li>
+                <a href="javascript:void(0)">
+                    只有想法而不行动的人<br>
+                    永远也体会不到<br>
+                    收获果实时的喜悦
+                </a>
+            </li>
+            <li>
+                <a href="javascript:void(0)">
+                    别轻易依靠<br>
+                    你<br>
+                    才是自己的城堡
+                </a>
+            </li>
+            <li>
+                <a href="javascript:void(0)">
+                    痛苦的时候<br>
+                    正是<br>
+                    成长的时候
+                </a>
+            </li>
+            <li>
+                <a href="javascript:void(0)">
+                    你就是<br>
+                    你自己的王<br>
+                    在你努力的地方
+                </a>
+            </li>
+            <li>
+                <a href="javascript:void(0)">
+                    要让人觉得毫不费力<br>
+                    只能背后<br>
+                    极其努力
+                </a>
+            </li>
+            <li>
+                <a href="javascript:void(0)">
+                    漂亮又努力的人<br>
+                    运气才会<br>
+                    变得更好
+                </a>
+            </li>
+            <li>
+                <a href="javascript:void(0)">
+                    没有任何人的努力<br>
+                    是无意义的
+                </a>
+            </li>
+            <li>
+                <a href="javascript:void(0)">
+                    乌云后面<br>
+                    依然是<br>
+                    灿烂的晴天
+                </a>
+            </li>
+            <li>
+                <a href="javascript:void(0)">
+                    越是泥泞的道路<br>
+                    留下的足迹<br>
+                    越清晰
+
+                </a>
+            </li>
+            <li>
+                <a href="javascript:void(0)">
+                    不期待最完美的别人<br>
+                    做最棒的<br>
+                    自己
+                </a>
+            </li>
+            <li>
+                <a href="javascript:void(0)">
+                    宽恕和善良同在<br>
+                    与岁月同在<br>
+                    去迎接所有未来温暖的梦想
+                </a>
+            </li>
+
+        </ul>
+
+        <p align="center">提示：上下滑动点选一个券？</p>
+        <p align="center"><a id="queding" href="javascript:void(0)" class="wenanhide"><img
+                src="images/queding.png"/></a></p>
+    </div>
+</div>
+<!--文案提示-->
+</body>
+</html>

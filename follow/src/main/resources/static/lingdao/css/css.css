@@ -1,0 +1,224 @@
+@charset "utf-8";
+/* CSS Document */
+
+body, ul, ol, li, p, h1, h2, h3, h4, h5, h6, form, fieldset, table, td, img, div {
+	margin: 0;
+	padding: 0;
+	border: 0;
+}
+body {
+	color: #333;
+	font-size: 14px;
+	font-family: "Microsoft YaHei";
+	background-color: #fff;
+	max-width: 640px;
+	margin-top: 0;
+	margin-right: auto;
+	margin-bottom: 0;
+	margin-left: auto;
+	padding-bottom: 15px;
+}
+body img {
+	max-width: 100%;
+	display: block;
+}
+ul, ol {
+	list-style-type: none;
+}
+select, input, img, select {
+	vertical-align: middle;
+}
+input {
+	font-size: 12px;
+}
+a {
+	text-decoration: none;
+	color: #333;
+}
+a:hover {
+	color: #000;
+	text-decoration: none;
+}
+.clear {
+	clear: both;
+}
+.title {
+	color: #333333;
+	background-image: url(../images/title.png);
+	background-repeat: no-repeat;
+	background-position: left center;
+	padding-left: 5%;
+	line-height: 30px;
+	width: 85%;
+	margin-top: 15px;
+	margin-right: auto;
+	margin-bottom: 0px;
+	margin-left: auto;
+	font-size: 18px;
+	background-size: contain;
+}
+.con {
+	width: 90%;
+	margin: 0 auto;
+}
+.con img {
+	display: block;
+}
+.con p {
+	padding-top: 10px;
+}
+.con2 {
+	width: 90%;
+	margin: 0 auto;
+}
+.con2 img {
+	display: block;
+}
+.con2 p {
+	padding-top: 5px;
+}
+.con3 {
+	width: 90%;
+	margin-top: -5rem;
+	margin-right: auto;
+	margin-bottom: 0;
+	margin-left: auto;
+}
+.con3 img {
+	display: block;
+}
+.con3 p {
+	padding-top: 10px;
+}
+.tab{
+	background-color: #ff646e;
+	padding: 2px;
+	width: 90%;
+	margin-top: 0px;
+	margin-right: auto;
+	margin-bottom: 0px;
+	margin-left: auto; line-height:40px; border-radius:10px; display: flex;
+     flex-flow: row wrap;
+    justify-content:space-between; position:absolute; top:39.5rem; z-index:100; left:5%;
+}
+.tab a{
+	font-size: 14px;
+	color: #fff;
+	width: 20%;
+	display: block;
+	text-align: center;
+	font-weight: bold;
+}
+.sel{
+	font-size: 16px!important;
+	background-color: #da2b39!important; border-radius:10px;
+ }
+ table.tb{
+	padding: 0px;
+	margin-top: 0px;
+	margin-right: auto;
+	margin-bottom: 0px;
+	margin-left: auto;
+	border-collapse: collapse;
+	width: 100%; border-radius:10px; border-style:hidden  
+} table.tb tr{}
+table.tb tr td{
+	color: #333;
+	border: 1px solid #eee;
+	line-height: 20px;
+	text-align: center;
+	padding-top: 5px;
+	padding-right: 3px;
+	padding-bottom: 5px;
+	padding-left: 3px;
+}
+.table{
+	border: 1px solid #eee;
+	border-radius: 5px;
+	width: 90%;
+	margin-top: 10px;
+	margin-right: auto;
+	margin-bottom: 10px;
+	margin-left: auto; overflow:hidden;
+}/*设置奇数行颜色*/
+table tr:nth-child(odd)
+{
+    background: #e3f4ff;
+}
+/*设置偶数行颜色*/
+table tr:nth-child(even)
+{
+    background: #fff;
+}
+.map{
+	padding: 0px;
+	margin-top: 0px;
+	margin-right: auto;
+	margin-bottom: 70px;
+	margin-left: auto;
+	position: relative;
+}
+.map_img{}
+.mark{
+	position: absolute;
+	font-size: 12px;
+	color: #ff0010;
+	font-weight: bold;
+}
+.mark span{ color:#147cbf;}
+.top1{
+	background-image: url(../images/top1.png);
+	background-repeat: no-repeat;
+	background-position: left top;
+	background-size: 20%;
+	padding-top: 0px;
+	padding-left: 25px;
+}
+.top2,.top3{
+	background-image: url(../images/top2.png);
+	background-repeat: no-repeat;
+	background-position: left top;
+	background-size: 18%;
+	padding-top: 0px;
+	padding-left: 20px;
+}
+.top4,.top5{
+	background-image: url(../images/top3.png);
+	background-repeat: no-repeat;
+	background-position: left top;
+	background-size: 15%;
+	padding-top: 0px;
+	padding-left: 18px;
+}
+.other{
+	background-image: url(../images/other.png);
+	background-repeat: no-repeat;
+	background-position: left 5px;
+	background-size: 10%;
+	padding-top: 0px;
+	padding-left: 15px;
+}
+.puer{
+	left: 50%;
+	top: 50%;
+	margin-top: 4rem; margin-left:-2.5rem;
+}
+.chuxiong{left:50%; top:50%;margin-left:-0.5rem;}
+.honghe{left:50%; top:50%;margin-top: 3.5rem; margin-left:1.5rem;}
+.dali{left:50%; top:50%;margin-top: -3rem; margin-left:-4.5rem;}
+.kunming{left:50%; top:50%;margin-top: -1.5rem; margin-left:2rem;}
+
+.diqing{ left:7rem; top:2.2rem;}
+.nujiang{ left:4.5rem; top:3rem;}
+.lijiang{ left:9rem; top:5rem;}
+.shaotong{ right:2rem; top:3rem;}
+.qujing{ right:1.2rem; top:7rem;}
+
+.dehong{ left:3rem; top:11rem;}
+.baoshan{ left:5rem; top:9.5rem;}
+.lincang{ left:5.5rem; top:14rem;}
+.yuxi{ left:11rem; top:12.5rem;}
+.wenshan{ right:2rem; top:13rem;}
+
+.simao{ left:8rem; bottom:2.5rem}
+.xishuangbanna{ left:9rem; bottom:1rem;}

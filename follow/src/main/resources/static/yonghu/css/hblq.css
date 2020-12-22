@@ -1,0 +1,46 @@
+body {
+    background: url(../../images/hn_fpz/wdjp_bg.png) no-repeat center center;
+    background-size: 100% 100%;
+    width: 100%;
+    height: 100%;
+    position: relative;
+    padding: 0;
+    margin: 0;
+    overflow: hidden;
+}
+.clearfix{
+    clear: both;
+}
+section{
+    width: 100%;
+    position: relative;
+    height: 100%;
+    text-align: center;
+}
+section input[type='text']{
+    background: #fff;
+    width: 60vw;
+    margin: auto;
+    height: 7vh;
+    text-align: center;
+    border: none;
+    border-radius: 5vw;
+    position: relative;
+    top: 78vw;
+}
+section input[type='image']{
+    width: 60vw;
+    margin: auto;
+    height: 8vh;
+    text-align: center;
+    border: none;
+    border-radius: 5vw;
+    position: relative;
+    top: 88vw;
+}
+.goback{
+    position: absolute;
+    width: 7vw;
+    top: 1vh;
+    left: 2vw;
+}

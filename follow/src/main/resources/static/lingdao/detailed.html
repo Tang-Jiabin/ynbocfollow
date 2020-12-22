@@ -1,0 +1,141 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>云南中行晋升活动</title>
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"/>
+    <link href="css/css.css" rel="stylesheet" type="text/css">
+    <script type="text/javascript" src="js/jquery-1.9.1.min.js"></script>
+    <script type="text/javascript" src="js/tab.js"></script>
+</head>
+<body>
+
+<div class="top">
+    <p><img src="images/index_02.jpg"></p>
+    <p><img src="images/wangdian_06.jpg"></p>
+
+</div>
+
+
+<div class="table">
+    <table width="100%" border="0" class="tb" id="tb-1">
+        <tr>
+            <td bgcolor="#43abee" style="color:#fff">网点名称</td>
+            <td bgcolor="#43abee" style="color:#fff">新激活<br>
+                客户数
+            </td>
+            <td bgcolor="#43abee" style="color:#fff">新激活<br>
+                交易<br>
+                客户数
+            </td>
+            <td bgcolor="#43abee" style="color:#fff">领奖<br>
+                数
+            </td>
+            <td bgcolor="#43abee" style="color:#fff">领奖率</td>
+        </tr>
+        <tr>
+            <td>西双版纳州分行</td>
+            <td>150</td>
+            <td>120</td>
+            <td>120</td>
+            <td>100%</td>
+        </tr>
+        <tr>
+            <td>西双版纳州版纳大厦支行</td>
+            <td>98</td>
+            <td>90</td>
+            <td>88</td>
+            <td>97.7%</td>
+        </tr>
+        <tr>
+            <td>西双版纳州勐腊路支行</td>
+            <td>95</td>
+            <td>90</td>
+            <td>90</td>
+            <td>100%</td>
+        </tr>
+        <tr>
+            <td>西双版纳州嘎兰中路支行</td>
+            <td>90</td>
+            <td>90</td>
+            <td>90</td>
+            <td>100%</td>
+        </tr>
+        <tr>
+            <td>西双版纳州勐腊路支行</td>
+            <td>85</td>
+            <td>85</td>
+            <td>85</td>
+            <td>100%</td>
+        </tr>
+    </table>
+</div>
+
+<script type="text/javascript">
+
+    function GetQueryString(name) {
+        var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+        var r = window.location.search.substr(1).match(reg);
+        if (r != null) return unescape(r[2]);
+        return null;
+    }
+
+    $(function (){
+        let name = decodeURI(GetQueryString('name'));
+
+        console.log(name)
+
+
+        $.ajax({
+            url: '/ynbocfollow/leader/getBusinessInfo',
+            type: 'get',
+            dataType: 'json',
+            data: {'name':name},
+            success: function (data) {
+
+                if(data.status !== 200){
+                    alert(data.msg)
+                }
+                let dataList = data.data;
+
+                let trhead = '<tr>' +
+                    '<td bgcolor="#43abee" style="color:#fff">网点名称</td>' +
+                    '<td bgcolor="#43abee" style="color:#fff">新激活<br>客户数</td>' +
+                    '<td bgcolor="#43abee" style="color:#fff">新激活<br>交易<br>客户数</td>' +
+                    '<td bgcolor="#43abee" style="color:#fff">领奖<br>数</td>' +
+                    '<td bgcolor="#43abee" style="color:#fff">领奖率</td>' +
+                    '</tr>'
+
+                let trbody;
+
+                for (let i = 0; i < dataList.length; i++) {
+
+                    let branch = dataList[i].branch;
+                    let activation = dataList[i].activation;
+                    let activationEffect = dataList[i].activationEffect;
+                    let pay = dataList[i].pay;
+                    let payEffect = dataList[i].payEffect;
+                    let receive = dataList[i].receive;
+                    let receiveEffect = dataList[i].receiveEffect;
+
+                    trbody = trbody + '<tr>' +
+                        '<td>'+branch+'</td>' +
+                        '<td>'+activation+'</td>' +
+                        '<td>'+pay+'</td>' +
+                        '<td>'+receive+'</td>' +
+                        '<td>'+receiveEffect+'%</td>' +
+                        '</tr>';
+
+                }
+                $('#tb-1').html(trhead+trbody)
+
+            },
+            error: function (data) {
+                alert("系统繁忙，请稍后再试")
+            }
+        })
+    })
+
+</script>
+</body>
+</html>

@@ -1,0 +1,32 @@
+server:
+  port: 8086
+  servlet:
+    context-path: /ynbocfollow
+
+spring:
+  datasource:
+    name: mysql
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    #基本属性
+    url: jdbc:mysql://119.45.22.39:3306/zykj?useUnicode=true&characterEncoding=utf8&serverTimezone=Asia/Shanghai&autoReconnect=true
+    username: root
+    password: 1a@Bt@uQsom1e1Vu
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    database-platform: com.zykj.follow.MySQL5InnoDBDialectUtf8mb4
+  redis:
+    host: 119.45.22.39
+    port: 6379
+    password: ywWPbdC5pi49gHBds
+    database: 0
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8
+
+logging:
+  level:
+    root: info
+  file:
+    name: ./logs/follow.log

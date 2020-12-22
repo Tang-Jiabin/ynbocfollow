@@ -1,0 +1,233 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>云南中行</title>
+    <link type="text/css" rel="stylesheet" href="css/shouji.css"/>
+    <meta name="viewport" content="width=device-width initial-scale=1.0 maximum-scale=1.0 user-scalable=yes"/>
+    <script type="text/javascript" src="js/jquery1.42.min.js"></script>
+    <script type="text/javascript" src="js/showmore.js"></script>
+    <script type="text/javascript" src="js/animate.js"></script>
+</head>
+
+<body>
+<div class="back"><a href="javascript:history.back(-1)"><img src="images/back.png"></a></div>
+<div class="luru_top">
+    <div class="luru_top_img"><img src="images/top.png"/></div>
+    <div class="luru_top1">
+        <div class="luru_touxiang"><img id="headImgUrl" src="images/touxiang.jpg"/></div>
+        <div class="luru_txt">
+            <p><strong id="nickname">吴磊</strong></p>
+                        <p><strong id="branch">云南省分行某某网点</strong></p>
+            <p id="staffMobile">13933198802</p>
+        </div>
+        <div class="clear"></div>
+    </div>
+</div>
+<div class="title2">
+    关注&nbsp;<strong id="follow">38</strong>人&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;支付&nbsp;<strong
+        id="pay">38</strong>人
+</div>
+<div class="tuijian_t">
+    <div class="tuijian_t1">序号</div>
+    <div class="tuijian_t2">昵称/时间</div>
+    <div class="tuijian_t3">状态</div>
+    <div class="clear"></div>
+</div>
+<ul id="tuijian_list">
+    <li>
+        <div class="tuijian_l"><img src="images/num1.png"/></div>
+        <div class="tuijian_touxiang"><img src="images/touxiang.jpg"/></div>
+        <div class="tuijian_m"><strong>李德任</strong>
+            <p>220-12-05</p>
+        </div>
+        <div class="tuijian_r"><strong class="yzf">已支付</strong></div>
+        <div class="clear"></div>
+    </li>
+    <li>
+        <div class="tuijian_l"><img src="images/num2.png"/></div>
+        <div class="tuijian_touxiang"><img src="images/touxiang.jpg"/></div>
+        <div class="tuijian_m"><strong>李德任</strong>
+            <p>220-12-05</p>
+        </div>
+        <div class="tuijian_r"><strong class="ygz">已关注</strong></div>
+        <div class="clear"></div>
+    </li>
+    <li>
+        <div class="tuijian_l"><img src="images/num3.png"/></div>
+        <div class="tuijian_touxiang"><img src="images/touxiang.jpg"/></div>
+        <div class="tuijian_m"><strong>李德任</strong>
+            <p>220-12-05</p>
+        </div>
+        <div class="tuijian_r"><strong class="yzf">已支付</strong></div>
+        <div class="clear"></div>
+    </li>
+    <li>
+        <div class="tuijian_l">4</div>
+        <div class="tuijian_touxiang"><img src="images/touxiang.jpg"/></div>
+        <div class="tuijian_m"><strong>李德任</strong>
+            <p>220-12-05</p>
+        </div>
+        <div class="tuijian_r"><strong class="yzf">已支付</strong></div>
+        <div class="clear"></div>
+    </li>
+    <li>
+        <div class="tuijian_l">5</div>
+        <div class="tuijian_touxiang"><img src="images/touxiang.jpg"/></div>
+        <div class="tuijian_m"><strong>李德任</strong>
+            <p>220-12-05</p>
+        </div>
+        <div class="tuijian_r"><strong class="yzf">已支付</strong></div>
+        <div class="clear"></div>
+    </li>
+
+</ul>
+<script type="text/javascript">
+    function isEmpty(data) {
+        if (data === '' || data === 'undefined' || data === null) {
+            return true;
+        }
+        return false;
+    }
+
+    let yg_token;
+
+    $(document).ready(function () {
+        yg_token = localStorage.getItem("yg_token");
+
+        let staffInfo = JSON.parse(localStorage.getItem("staffInfo"))
+
+        let nickname;
+        let headImgUrl;
+        let staffMobile;
+        let branch;
+
+        if (isEmpty(staffInfo)) {
+            $.ajax({
+                url: '/ynbocfollow/staff/getStaffInfo',
+                type: 'get',
+                dataType: 'json',
+                beforeSend: function (request) {
+                    request.setRequestHeader("X-Auth-Token", localStorage.getItem("yg_token"));
+                },
+                data: {},
+                success: function (data) {
+
+                    if (data.status != 200) {
+                        alert(data.msg)
+                        return;
+                    }
+
+                    nickname = data.data.nickname;
+                    headImgUrl = data.data.headImgUrl;
+                    staffMobile = data.data.staffMobile;
+                    branch = data.data.branch;
+
+                    if (headImgUrl != null) {
+                        $("#headImgUrl").attr("src", headImgUrl)
+                    }
+                    $("#nickname").html(nickname)
+                    $("#staffMobile").html(staffMobile)
+                    $("#branch").html(branch)
+
+                    let staffInfo = {'nickname': nickname, 'headImgUrl': headImgUrl, 'staffMobile': staffMobile}
+                    localStorage.setItem("staffInfo", JSON.stringify(staffInfo));
+                },
+                error: function (data) {
+                    alert(data.msg)
+                }
+            })
+        } else {
+            nickname = staffInfo.nickname;
+            headImgUrl = staffInfo.headImgUrl;
+            staffMobile = staffInfo.staffMobile;
+            branch = staffInfo.branch;
+        }
+
+        if (headImgUrl != null) {
+            $("#headImgUrl").attr("src", headImgUrl)
+        }
+        $("#nickname").html(nickname)
+        $("#staffMobile").html(staffMobile)
+        $("#branch").html(branch)
+
+        //查询明细
+        $.ajax({
+            url: '/ynbocfollow/staff/getInviteDetailed',
+            type: 'get',
+            dataType: 'json',
+            beforeSend: function (request) {
+                request.setRequestHeader("X-Auth-Token", yg_token);
+            },
+            data: {},
+            success: function (data) {
+                console.log(data.status);
+                console.log(data.msg);
+                console.log(data.data);
+                if (data.status != 200) {
+                    alert(data.msg)
+                } else {
+                    let user = data.data.user;
+                    let count = user.length;
+                    let pay = data.data.pay;
+                    let follow = data.data.follow;
+
+                    $('#pay').html(pay);
+                    $('#follow').html(follow);
+
+                    console.log(user)
+                    console.log(count)
+
+                    $('#tuijian_list').empty();
+                    let htmlStr = '';
+                    let htmlLi = '';
+
+                    for (let i = 0; i < count; i++) {
+                        let nickname = user[i].nickname;
+                        let headImgUrl = user[i].headImgUrl;
+                        let subscribeTime = user[i].subscribeTime;
+                        let status = user[i].status;
+                        let index = 1;
+                        if (i === 0) {
+                            index = "<img src='images/num1.png'/>";
+                        } else if (i === 1) {
+                            index = "<img src='images/num2.png'/>";
+                        } else if (i === 2) {
+                            index = "<img src='images/num3.png'/>";
+                        }
+                        index = i + 1;
+
+                        htmlLi = "<li>" +
+                            "<div class='tuijian_l'>" + index + "</div>" +
+                            "<div class='tuijian_touxiang'>" +
+                            "   <img src='" + headImgUrl + "'/>" +
+                            "</div>" +
+                            "<div class='tuijian_m'>" +
+                            "   <strong>" + nickname + "</strong>" +
+                            "       <p>" + subscribeTime + "</p>" +
+                            "</div>" +
+                            "<div class='tuijian_r'>" +
+                            "   <strong class='yzf'>" + status + "</strong>" +
+                            "</div>" +
+                            "<div class='clear'></div>" +
+                            "</li>";
+
+                        htmlStr = htmlStr + htmlLi;
+
+                    }
+
+                    $('#tuijian_list').html(htmlStr)
+
+                }
+
+            },
+            error: function (data) {
+                alert(data.msg)
+            }
+        })
+    })
+
+</script>
+</body>
+</html>

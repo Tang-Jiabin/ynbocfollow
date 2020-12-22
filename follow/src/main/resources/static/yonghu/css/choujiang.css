@@ -1,0 +1,138 @@
+@charset "utf-8";
+/* CSS Document */
+
+table {
+	text-align: center;
+	border-collapse: collapse;
+	background-image: none;
+	padding: 0px;
+	width: 73%;
+	margin-top: 25%; min-height:350px;
+	margin-right: auto;
+	margin-bottom: 0px;
+	margin-left: auto;
+	border-top-width: 0px;
+	border-right-width: 0px;
+	border-bottom-width: 0px;
+	border-left-width: 0px;
+}
+table P {
+	font-size: 0px;
+	margin-top: 5px;
+	margin-right: 0px;
+	margin-bottom: 0px;
+	margin-left: 0px;
+}
+table tr {
+	margin-top: 0px;
+	padding-top: 0px;
+	padding-bottom: 0px;
+}
+table tr td {
+	font-size: 0px;
+
+	background-image: url(../images/hezi1.png);
+	background-repeat: no-repeat;
+	background-position: center center;
+	background-size: 88%;
+	padding: 5px;
+	margin-top: 0%;
+	margin-right: 1%;
+	margin-bottom: 0%;
+	margin-left: 1%;
+}
+    @media screen and (max-width: 320px){
+      table tr td {	
+	height: 35px; line-height:69px;
+}
+    }
+
+    @media screen and (min-width: 375px){
+      table tr td {	
+	height: 40px; line-height:82px;
+}
+    }
+	    @media screen and (min-width:414px){
+      table tr td {	
+	height: 50px; line-height:93px;
+}
+    }
+		    @media screen and (min-width:563px){
+      table tr td {	
+	height: 55px; line-height:103px;
+}
+    }
+
+
+
+#btn {
+	box-sizing: border-box;
+	width: 190px;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+#btn * {
+	flex-grow: 1;
+	background-color: red;
+	border: 1px solid #000;
+	color: #fff;
+	height: 30px;
+	font-size: 10px;
+}
+.active {
+	background-image: url(../images/hezi2.png);
+	background-repeat: no-repeat;
+	background-position: center center;
+	background-size: contain;
+}
+.newactive {
+	background-color: transparent;
+}
+.clearactive {
+	background-color: transparent;
+}
+.hezi_bg {
+	position: absolute;
+	top: 0;
+	z-index: -1000;
+	width: 100%;
+	max-width: 640px;
+}
+.hezi_bg img {
+	width: 100%;
+}
+.hezi_c {
+	width: 75%;
+	margin-top: 8%;
+	margin-right: auto;
+	margin-bottom: 0;
+	margin-left: auto;
+}
+.hezi_l {
+	width: 16%;
+	float: left;
+}
+.hezi_m {
+	width: 54%;
+	float: left;
+	margin-left: 7%; position:relative;
+}
+.hezi_r {
+	width: 16%;
+	float: right;
+}
+.hezi_l img, .hezi_m img, .hezi_r img {
+	width: 100%;
+}
+.kaiqi_txt{
+	position: absolute;
+	top: 5px;
+	width: 100%;
+	text-align: center;
+	font-size: 22px;
+	font-weight: bold;
+	color: #b10018;
+}
+.mingdan{ width:90%; margin:0 auto; text-align:center;}
+.mingdan li a{ font-size:14px; color:#FFF;}

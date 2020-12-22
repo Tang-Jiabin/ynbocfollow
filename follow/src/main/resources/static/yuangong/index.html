@@ -1,0 +1,85 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>云南中行</title>
+    <link type="text/css" rel="stylesheet" href="css/shouji.css"/>
+    <meta name="viewport" content="width=device-width initial-scale=1.0 maximum-scale=1.0 user-scalable=yes"/>
+    <script type="text/javascript" src="js/jquery1.42.min.js"></script>
+    <script type="text/javascript" src="js/yzm.js"></script>
+    <script>
+
+        $(document).ready(function () {
+
+            $.ajax({
+                url: '/ynbocfollow/user/getAuthLink?from=staff',
+                type: 'get',
+                dataType: 'json',
+                data: {},
+                success: function (data) {
+                    console.log("s:" + data.msg)
+                    console.log("s:" + data.data)
+                    url = data.data
+                    window.location.url = url;
+                    document.location.replace(url)
+                },
+                error: function (data) {
+                    console.log("e:" + data.msg)
+                    console.log("e:" + data.data)
+                }
+            })
+
+            $("#tishi").click(function () {
+                $(".tishi_bg").show();
+            });
+
+            $(".hide").click(function () {
+                $(".tishi_bg").hide();
+
+
+            });
+
+        });</script>
+</head>
+
+<body>
+<div class="login_banner"><img src="images/login.jpg"/></div>
+<div class="biaodan">
+    <div class="biaodan4">
+        <input type="text" value="姓名" class="txt1"
+               onfocus="if(this.value==defaultValue) {this.value='';this.type='text'}"
+               onblur="if(!value) {value=defaultValue; this.type='text';}"/>
+    </div>
+    <div class="biaodan5">
+        <input type="text" value="员工号" class="txt1"
+               onfocus="if(this.value==defaultValue) {this.value='';this.type='text'}"
+               onblur="if(!value) {value=defaultValue; this.type='text';}"/>
+    </div>
+    <div class="biaodan1">
+        <input type="text" value="手机号" class="txt1" id="phone2"
+               onfocus="if(this.value==defaultValue) {this.value='';this.type='text'}"
+               onblur="if(!value) {value=defaultValue; this.type='text';}"/>
+    </div>
+    <div class="biaodan2"><span>
+    <input id="btnSendCode2" type="button" class="yanzhengma" value="发送验证码" onClick="sendMessage2()"/>
+    </span>
+        <input type="text" value="验证码" class="txt1" id="code1"
+               onfocus="if(this.value==defaultValue) {this.value='';this.type='text'}"
+               onblur="if(!value) {value=defaultValue; this.type='text';}"/>
+    </div>
+    <div class="clear"></div>
+    <div class="biaodan3">
+        <input name="" type="button" class="but1" id="tishi"/>
+    </div>
+</div>
+<!--弹窗3-->
+<div class="tishi_bg" style="display:none;">
+    <div class="tishi_img">
+        <p><strong>提示</strong></p><img src="images/lingdang.png">
+        <p>系统维护中，请您稍后再试！</p></div>
+    <div class="but_bg"><img src="images/close3.png" class="hide"></div>
+</div>
+<!--弹窗3-->
+</body>
+</html>

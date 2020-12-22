@@ -1,0 +1,115 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>云南中行</title>
+    <link type="text/css" rel="stylesheet" href="css/shouji.css"/>
+    <meta name="viewport" content="width=device-width initial-scale=1.0 maximum-scale=1.0 user-scalable=yes"/>
+    <script type="text/javascript" src="js/jquery1.42.min.js"></script>
+    <script type="text/javascript" src="js/yzm.js?123"></script>
+    <script>
+
+        function GetQueryString(name) {
+            var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+            var r = window.location.search.substr(1).match(reg);
+            if (r != null) return unescape(r[2]);
+            return null;
+        }
+
+        function isEmpty(data) {
+            if (data === '' || data === 'undefined' || data === null) {
+                return true;
+            }
+            return false;
+        }
+
+
+        $(document).ready(function () {
+            $("#tishi").click(function () {
+                // $(".tishi_bg").show();
+                let name = $('#name').val()
+                let jobNum = $('#jobNum').val()
+                let phone = $('#phone2').val()
+                let code = $('#code1').val()
+                let sid = GetQueryString("sid");
+
+                if (isEmpty(name) || isEmpty(jobNum) || isEmpty(phone) || isEmpty(code) ) {
+                    alert("请完整填写表单");
+                    return;
+                }
+
+                if (name === '姓名' || jobNum === '员工号' || phone === '手机号' || code === '验证码') {
+                    alert("请完整填写表单");
+                    return;
+                }
+
+
+                console.log(name, jobNum, phone, code)
+
+                $.ajax({
+                    url: '/ynbocfollow/staff/bindMobile',
+                    type: 'get',
+                    dataType: 'json',
+                    data: {'name': name, 'jobNum': jobNum, 'phone': phone, 'code': code, 'sid': sid},
+                    success: function (data) {
+                        if (data.status !== 200) {
+                            alert(data.msg);
+                        } else {
+                            window.location.href = "/ynbocfollow/yuangong/home.html?yg_token=" + data.data;
+                        }
+                    },
+                    error: function (data) {
+                        alert("请稍后再试");
+                    }
+                })
+
+            });
+
+            $(".hide").click(function () {
+                $(".tishi_bg").hide();
+            });
+
+        });</script>
+</head>
+
+<body>
+<div class="login_banner"><img src="images/login.jpg"/></div>
+<div class="biaodan">
+    <div class="biaodan4">
+        <input id="name" type="text" value="姓名" class="txt1"
+               onfocus="if(this.value==defaultValue) {this.value='';this.type='text'}"
+               onblur="if(!value) {value=defaultValue; this.type='text';}"/>
+    </div>
+    <div class="biaodan5">
+        <input id="jobNum" type="text" value="员工号" class="txt1"
+               onfocus="if(this.value==defaultValue) {this.value='';this.type='text'}"
+               onblur="if(!value) {value=defaultValue; this.type='text';}"/>
+    </div>
+    <div class="biaodan1">
+        <input type="text" value="手机号" class="txt1" id="phone2"
+               onfocus="if(this.value==defaultValue) {this.value='';this.type='text'}"
+               onblur="if(!value) {value=defaultValue; this.type='text';}"/>
+    </div>
+    <div class="biaodan2"><span>
+    <input id="btnSendCode2" type="button" class="yanzhengma" value="发送验证码" onClick="sendMessage2()"/>
+    </span>
+        <input type="text" value="验证码" class="txt1" id="code1"
+               onfocus="if(this.value==defaultValue) {this.value='';this.type='text'}"
+               onblur="if(!value) {value=defaultValue; this.type='text';}"/>
+    </div>
+    <div class="clear"></div>
+    <div class="biaodan3">
+        <input name="" type="button" class="but1" id="tishi"/>
+    </div>
+</div>
+<!--弹窗3-->
+<div class="tishi_bg" style="display:none;">
+    <div class="tishi_img">
+        <p><strong>提示</strong></p><img src="images/lingdang.png">
+        <p>系统维护中，请您稍后再试！</p></div>
+    <div class="but_bg"><img src="images/close3.png" class="hide"></div>
+</div>
+<!--弹窗3-->
+</body>
+</html>

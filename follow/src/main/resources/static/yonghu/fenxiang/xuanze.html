@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>选择海报</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1">
+
+    <!-- Link Swiper's CSS -->
+    <link rel="stylesheet" href="css/swiper.min.css">
+    <link type="text/css" rel="stylesheet" href="css/shouji.css"/>
+    <script type="text/javascript" src="js/jquery-1.9.1.min.js"></script>
+
+    <!-- Demo styles -->
+    <style>
+        html, body {
+            position: relative;
+            height: 100%;
+        }
+
+        body {
+
+            font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
+            font-size: 14px;
+            color: #000000;
+            margin: 0;
+            padding: 0;
+        }
+
+        .swiper-container {
+            width: 100%;
+            height: 100%;
+            padding-bottom: 40px;
+        }
+
+        .swiper-slide {
+            text-align: center;
+            font-size: 18px;
+
+
+            /* Center slide text vertically */
+            display: -webkit-box;
+            display: -ms-flexbox;
+            display: -webkit-flex;
+            display: flex;
+            -webkit-box-pack: center;
+            -ms-flex-pack: center;
+            -webkit-justify-content: center;
+            justify-content: center;
+            -webkit-box-align: center;
+            -ms-flex-align: center;
+            -webkit-align-items: center;
+            align-items: center;
+            transition: 300ms;
+            transform: scale(0.8);
+        }
+
+        .swiper-slide-active, .swiper-slide-duplicate-active {
+            transform: scale(1);
+
+        }
+
+        .swiper-container {
+            --swiper-theme-color: #fff;
+        }
+
+    </style>
+</head>
+<body style="background-color:#44294d">
+<div class="back"><a href="#"><img src="./images/back.png"></a></div>
+<div class="logo"><img src="./images/logo.png"></div>
+<div class="choose_top">
+    <!-- Swiper -->
+    <div class="swiper-container">
+        <div class="swiper-wrapper">
+            <div class="swiper-slide"><img id="sw0" src="images/shuangzi.jpg"></div>
+            <div class="swiper-slide"><img id="sw1" src="images/shuangyu.jpg"></div>
+            <div class="swiper-slide"><img id="sw2" src="images/chunv.jpg"></div>
+            <div class="swiper-slide"><img id="sw3" src="images/tiancheng.jpg"></div>
+            <div class="swiper-slide"><img id="sw4" src="images/tianxie.jpg"></div>
+            <div class="swiper-slide"><img id="sw5" src="images/sheshou.jpg"></div>
+            <div class="swiper-slide"><img id="sw6" src="images/juxie.jpg"></div>
+            <div class="swiper-slide"><img id="sw7" src="images/mojie.jpg"></div>
+            <div class="swiper-slide"><img id="sw8" src="images/shuiping.jpg"></div>
+            <div class="swiper-slide"><img id="sw9" src="images/shizi.jpg"></div>
+            <div class="swiper-slide"><img id="sw10" src="images/baiyang.jpg"></div>
+            <div class="swiper-slide"><img id="sw11" src="images/jinniu.jpg"></div>
+        </div>
+        <!-- Add Pagination -->
+        <div class="swiper-pagination"></div>
+    </div>
+</div>
+<div class="choose"><a><img src="./images/choose.png"></a></div>
+<!-- Swiper JS -->
+<script src="js/swiper.min.js"></script>
+
+<!-- Initialize Swiper -->
+<script>
+
+    var swiper = new Swiper('.swiper-container', {
+        slidesPerView: 1.5,
+        spaceBetween: 0,
+        centeredSlides: true,
+        initialSlide: 0,
+        loop: true,
+        pagination: {
+            el: '.swiper-pagination',
+            clickable: true,
+        },
+    });
+
+    $(".choose").click(Jump);
+    function Jump() {
+        let img = $('#sw' + swiper.realIndex + '').attr('src');
+        window.location.href = "/ynbocfollow/yonghu/fenxiang/zhufu.html?img="+img;
+    }
+
+
+
+
+
+</script>
+</body>
+</html>

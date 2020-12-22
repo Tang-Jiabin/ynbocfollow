@@ -1,0 +1,169 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>秒杀活动</title>
+    <link type="text/css" rel="stylesheet" href="css/miaosha.css"/>
+    <link type="text/css" rel="stylesheet" href="css/css.css"/>
+    <script type="text/javascript" src="js/jquery1.42.min.js"></script>
+    <script type="text/javascript" src="js/queryPathParam.js"></script>
+    <script type="text/javascript">
+        $(function () {
+
+            let recordsId = GetQueryString("recordsId");
+            console.log(recordsId)
+
+            $.ajax({
+                url: '/ynbocfollow/user/getPrizeInfo',
+                type: 'get',
+                dataType: 'json',
+                beforeSend: function (request) {
+                    request.setRequestHeader("X-Auth-Token", localStorage.getItem("yh_token"));
+                },
+                data: {'recordsId': recordsId},
+                success: function (data) {
+                    if (data.status !== 200) {
+                        alert(data.msg)
+                    } else {
+                        console.log(data.data)
+                        let prizeTime = data.data.recordsDate;
+                        let prizeName = data.data.prizeName;
+                        let prizeImg = data.data.prizeImg;
+                        let prizeStatus = data.data.status;
+                        $("#prizeTime").html("时间：" + prizeTime);
+                        $("#prizeName").html(prizeName);
+                        $("#prizeImg").attr("src", prizeImg);
+                        let status = "已领取";
+                        if (prizeStatus === 1) {
+                            status = "未领取";
+                        }
+                        $("#status").html(status)
+                    }
+                },
+                error: function (data) {
+                    alert(data.msg)
+                }
+            })
+
+        })
+
+
+    </script>
+    <script>
+
+        $(document).ready(function () {
+            $(".querentijiao").click(function () {
+
+                // $(".tishi_bg").show();
+                console.log("提交表单")
+
+                let recordsId = GetQueryString("recordsId");
+                let phone = $("#phone").val().trim();
+                let name = $("#name").val().trim();
+                let address = $("#address").val().trim();
+
+
+
+                if (phone === "手机号码" || name === "收货人" || address === "详细地址" || phone == null || name == null || address == null) {
+                    alert("请填写领取信息");
+                    return;
+                }
+
+                $.ajax({
+                    url: '/ynbocfollow/user/getUserInfo',
+                    type: 'get',
+                    dataType: 'json',
+                    beforeSend: function (request) {
+                        request.setRequestHeader("X-Auth-Token", localStorage.getItem("yh_token"));
+                    },
+                    data: {'recordsId': recordsId, "phone": phone, "name": name, "address": address},
+                    success: function (data) {
+                        if (data.status !== 200) {
+                            alert(data.msg)
+                        } else {
+                            alert("领取成功")
+                        }
+                    },
+                    error: function (data) {
+                        alert(data.msg)
+                    }
+
+                });
+
+
+                $(".hide").click(function () {
+                    $(".tishi_bg").hide();
+
+                });
+                $(".close").click(function () {
+                    $(".huodongguize_bg").hide();
+
+                });
+            });
+
+
+            $(".hide").click(function () {
+                $(".tishi_bg").hide();
+
+            });
+            $(".close").click(function () {
+                $(".huodongguize_bg").hide();
+
+            });
+
+        });</script>
+    <meta name="viewport" content="width=device-width initial-scale=1.0 maximum-scale=1.0 user-scalable=yes"/>
+</head>
+
+<body style="background-color:#fff; background-image:none;">
+<div class="back"><a href="/ynbocfollow/yonghu/home.html"><img src="images/back.png"></a></div>
+<!--wode-->
+<div class="wode"><img src="images/wode.png"></div>
+<!--wode-->
+
+<!--xiangqing-->
+<div class="xiangqing">
+    <div class="quanma">
+        <div class="quanma_l"><img id="prizeImg" src="images/jiangpin2.png"></div>
+        <div class="quanma_r">
+            <div class="yizhongjiang" id="status">已中奖</div>
+            <p><strong id="prizeName">华为P40手机</strong></p>
+            <p id="prizeTime">时间：2019-01-15 16 : 25 : 04</p>
+
+        </div>
+        <div class=" clear"></div>
+    </div>
+    <div class="xiangqing_t">领取规则</div>
+    <div class="xiangqing_c">
+        <p>获奖用户请认真填写下方收货信息，中国银行云南省分行将于活动结束后1-5个工作日内进行礼品发放，具体发货、收货时间以快递公司为准。</p>
+        <div class="dizhi_bg">
+            <div class="dizhi_c">
+                <input id="name" type="text" value="收货人" class="txt1"
+                       onfocus="if(this.value==defaultValue) {this.value='';this.type='text'}"
+                       onblur="if(!value) {value=defaultValue; this.type='text';}"/>
+                <input id="phone" type="text" value="手机号码" class="txt1"
+                       onfocus="if(this.value==defaultValue) {this.value='';this.type='text'}"
+                       onblur="if(!value) {value=defaultValue; this.type='text';}"/>
+                <input id="address" type="text" value="详细地址" class="txt1"
+                       onfocus="if(this.value==defaultValue) {this.value='';this.type='text'}"
+                       onblur="if(!value) {value=defaultValue; this.type='text';}"/>
+                <p align="center"><input name="" type="button" class="querentijiao"></p></div>
+        </div>
+        <p><strong>注</strong>：本活动奖品为中国银行青海分行提供的福利产品，免费发放，颜色将随机发放，无固定颜色，奖品不可折现，奖品已一经送出，不支持更换。
+        </p>
+    </div>
+</div>
+<!--xiangqing-->
+<!--弹窗3-->
+<div class="tishi_bg" style="display:none;">
+    <div class="tishi_img">
+        <p><strong>提示</strong></p>
+        <img src="images/smile.png">
+        <p>很遗憾，您暂时没有抽奖机会
+        <p>赶快去邀请好友参与活动吧~</p>
+    </div>
+    <div class="but_bg"><img src="images/close3.png" class="hide"></div>
+</div>
+<!--弹窗3-->
+</body>
+</html>
