@@ -36,7 +36,7 @@ function binding() {
     alert(1)
 }
 
-var phoneReg = /(^1[3|4|5|6|7|8]\d{9}$)|(^09\d{8}$)/;//手机号正则
+var phoneReg = /(^1[3|4|5|7|8]\d{9}$)|(^09\d{8}$)/;//手机号正则
 var count = 60; //间隔函数，1秒执行
 var InterValObj1; //timer变量，控制时间
 var curCount1;//当前剩余秒数
@@ -53,17 +53,21 @@ function sendMessage2() {
     $("#btnSendCode2").val(+curCount1 + "秒再获取");
     InterValObj1 = window.setInterval(SetRemainTime1, 1000); //启动计时器，1秒执行一次
     //向后台发送处理数据
+
     $.ajax({
         url: '/ynbocfollow/user/getCaptcha',
         type: 'get',
         dataType: 'json',
-        data: {'phone':phone},
+        data: {'phone': phone},
         success: function (data) {
-
+            if (data.status !== 200) {
+                alert(data.msg);
+            }
         },
         error: function (data) {
 
         }
+
     })
 }
 
@@ -82,4 +86,3 @@ function SetRemainTime1() {
 function binding() {
     alert(1)
 }
-	

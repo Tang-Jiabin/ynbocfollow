@@ -13,6 +13,7 @@ import com.zykj.follow.common.sms.CCPRestSDK;
 import com.zykj.follow.common.sms.DateUtil;
 import com.zykj.follow.pojo.*;
 import com.zykj.follow.repository.ReceivePhoneInfoRepository;
+import com.zykj.follow.repository.WechatGoldRepository;
 import com.zykj.follow.service.*;
 import com.zykj.follow.utils.*;
 import lombok.extern.slf4j.Slf4j;
@@ -23,16 +24,15 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
-import java.io.*;
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
 import java.net.URLEncoder;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 /**
  * 用户
@@ -58,9 +58,10 @@ public class UserController {
     private final ReceivePhoneInfoRepository receivePhoneInfoRepository;
     private final WeChatUserQrInfoService qrInfoService;
     private final InvitationRecordService invitationRecordService;
+    private final WechatGoldRepository wechatGoldRepository;
 
     @Autowired
-    public UserController(InvitationRecordService invitationRecordService, ReceivePhoneInfoRepository receivePhoneInfoRepository, PrizeInfoService prizeInfoService, LotteryNumberService lotteryNumberService, CollectRecordsService collectRecordsService, RedisUtil redisUtil, TokenManager tokenManager, UserService userService, WeChatUserQrInfoService qrInfoService) {
+    public UserController(InvitationRecordService invitationRecordService, ReceivePhoneInfoRepository receivePhoneInfoRepository, PrizeInfoService prizeInfoService, LotteryNumberService lotteryNumberService, CollectRecordsService collectRecordsService, RedisUtil redisUtil, TokenManager tokenManager, UserService userService, WeChatUserQrInfoService qrInfoService, WechatGoldRepository wechatGoldRepository) {
         this.userService = userService;
         this.tokenManager = tokenManager;
         this.redisUtil = redisUtil;
@@ -70,6 +71,7 @@ public class UserController {
         this.receivePhoneInfoRepository = receivePhoneInfoRepository;
         this.invitationRecordService = invitationRecordService;
         this.qrInfoService = qrInfoService;
+        this.wechatGoldRepository = wechatGoldRepository;
     }
 
     /**
@@ -295,26 +297,30 @@ public class UserController {
         }
 
         //领取金额
-        Random random = new Random();
-        int amount = 1;
+        List<WechatGold> wechatGoldList = wechatGoldRepository.findAllBySurplusGreaterThanEqual(1);
+
+        WechatGold wechatGold;
+        if (wechatGoldList.size() >= 1) {
+            wechatGold = getWechatGoldInfo(wechatGoldList);
+        } else {
+            return ServerResponse.createMessage(410, "当前奖品已派发完毕，请稍后重新参与");
+        }
+        if (wechatGold == null) {
+            return ServerResponse.createMessage(410, "当前奖品已派发完毕，请稍后重新参与");
+        }
+        BigDecimal amount = wechatGold.getAmount();
 
         //调用领取接口
-        String ljjAuthUrl = Module.GET_LJJ_AUTH_URL.replace("TYPE", "1").replace("KEY", Module.LJJ_KEY);
-        String ljjLink = OkhttpUtil.getInstance().httpGet(ljjAuthUrl);
-        JSONObject jsonObject = JSON.parseObject(ljjLink);
-        Integer status = jsonObject.getInteger("status");
-        if (status != ServerResponse.OK) {
-            return ServerResponse.createMessage(414, "领取失败");
-        }
-        String ljjUrl = jsonObject.getString("index");
-
+        String ljjUrl = getLjjUrl(wechatGold.getType());
         if (!StringUtils.hasLength(ljjUrl)) {
             return ServerResponse.createMessage(414, "领取失败");
         }
+        wechatGold.setSurplus(wechatGold.getSurplus() - 1);
+        wechatGoldRepository.save(wechatGold);
 
         //创建领取记录
         SnowflakeIdFactory factory = new SnowflakeIdFactory(1L, 1L);
-        CollectRecords collectRecords = createCollectRecords(tokenPhone, userInfo, new Double(amount), factory);
+        CollectRecords collectRecords = createCollectRecords(tokenPhone, userInfo, amount.doubleValue(), factory);
 
         //领取成功 设置邀请状态 2-已领取立减金
         addInvitationRecord(userInfo, 2);
@@ -358,11 +364,34 @@ public class UserController {
             lotteryNumber.setInvitationSurplus(0);
             lotteryNumber = lotteryNumberService.save(lotteryNumber);
         }
+
+        List<InvitationRecord> recordList = invitationRecordService.findAllByInviteUserId(userInfo.getUserId());
+        List<String> acceptIdList = recordList.stream().map(InvitationRecord::getAcceptUserId).collect(Collectors.toList());
+
+        List<WechatUserInfo> acceptUserList = userService.findAllByUserIdIn(acceptIdList);
+
+        List<JSONObject> jsonList = new ArrayList<>();
+        JSONObject inviteJson = new JSONObject();
+
+        for (InvitationRecord record : recordList) {
+            for (WechatUserInfo wechatUserInfo : acceptUserList) {
+                if (record.getAcceptUserId().equals(wechatUserInfo.getUserId())) {
+                    inviteJson = new JSONObject();
+                    inviteJson.put("acceptDate", record.getAcceptDate());
+                    inviteJson.put("nickname", wechatUserInfo.getNickname());
+                    inviteJson.put("status", record.getInviteStatus() == 2 ? "已领取" : "已关注");
+                    jsonList.add(inviteJson);
+                }
+            }
+        }
+
         JSONObject json = new JSONObject();
         json.put("surplusNumber", lotteryNumber.getSurplusNumber());
+        json.put("invitationTotal", lotteryNumber.getInvitationTotal());
         json.put("nickname", userInfo.getNickname());
         json.put("headImgUrl", userInfo.getHeadImgUrl());
         json.put("activityMobile", userInfo.getActivityMobile());
+        json.put("inviteList", jsonList);
 
         return ServerResponse.createMessage(ServerResponse.OK, "成功", json);
     }
@@ -375,7 +404,7 @@ public class UserController {
      */
     @Authorization
     @GetMapping(value = "luckDraw")
-    public ServerResponse<JSONObject> luckDraw(@RequestAttribute String tokenPhone) {
+    public synchronized ServerResponse<JSONObject> luckDraw(@RequestAttribute String tokenPhone) {
 
         WechatUserInfo userInfo = userService.findByActivityMobile(tokenPhone);
         if (userInfo == null) {
@@ -606,6 +635,35 @@ public class UserController {
     }
 
     /**
+     * 按照几率抽奖
+     *
+     * @param wechatGoldInfoList 奖品信息集合
+     * @return 奖品
+     */
+    private WechatGold getWechatGoldInfo(List<WechatGold> wechatGoldInfoList) {
+        TreeMap<Integer, Double> map = new TreeMap<Integer, Double>();
+        wechatGoldInfoList.forEach(prizeInfo -> map.put(prizeInfo.getPrizeId(), prizeInfo.getProbability()));
+
+        List<Double> list = new ArrayList<Double>(map.values());
+        List<Integer> gifts = new ArrayList<Integer>(map.keySet());
+
+        AliasMethod method = new AliasMethod(list);
+        int index = method.next();
+        Integer keyNum = gifts.get(index);
+
+        //测试
+        Optional<WechatGold> cartOptional = wechatGoldInfoList.stream().filter(item -> item.getPrizeId().equals(keyNum)).findFirst();
+        if (cartOptional.isPresent()) {
+            return cartOptional.get();
+        } else {
+            log.info("奖品id错误：id" + keyNum);
+            return null;
+        }
+
+
+    }
+
+    /**
      * 拼接授权链接
      *
      * @param json 自定义数据
@@ -645,14 +703,7 @@ public class UserController {
         collectRecords.setStatus(2);
         collectRecords.setUserId(userInfo.getUserId());
 
-        Double d = null;
-        try {
-            d = BigDecimalUtil.div(amount, 100, 2);
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-            d = 1.88;
-        }
-        collectRecords.setAmount(new BigDecimal(d));
+        collectRecords.setAmount(new BigDecimal(amount));
         collectRecords = collectRecordsService.save(collectRecords);
         return collectRecords;
     }
@@ -672,7 +723,33 @@ public class UserController {
                     if (invited.isPresent()) {
                         String inviteId = String.valueOf(factory.nextId());
                         invitationRecordService.add(inviteId, new Date(), invited.get().getUserId(), userInfo.getUserId(), userInfo.getQrScene(), status);
-                        if (status == 2) {
+                        if ("1001".equals(userInfo.getQrScene())) {
+                            //用户 2-已领取立减金
+                            if (status == 2) {
+                                LotteryNumber lotteryNumber = lotteryNumberService.findByUserId(invited.get().getUserId());
+                                if (lotteryNumber == null) {
+                                    lotteryNumber = new LotteryNumber();
+                                    String lotteryId = String.valueOf(factory.nextId());
+                                    lotteryNumber.setLotteryId(lotteryId);
+                                    lotteryNumber.setUserId(userInfo.getUserId());
+                                    lotteryNumber.setPhone(userInfo.getActivityMobile());
+                                    lotteryNumber.setTotalSurplusNumber(0);
+                                    lotteryNumber.setInvitationTotal(0);
+                                    lotteryNumber.setSurplusNumber(0);
+                                    lotteryNumber.setInvitationSurplus(0);
+                                }
+                                lotteryNumber.setTotalSurplusNumber(lotteryNumber.getTotalSurplusNumber() + 1);
+                                lotteryNumber.setInvitationSurplus(lotteryNumber.getInvitationSurplus() + 1);
+                                if (lotteryNumber.getInvitationSurplus() >= 1) {
+                                    lotteryNumber.setInvitationSurplus(0);
+                                    lotteryNumber.setTotalSurplusNumber(lotteryNumber.getTotalSurplusNumber() + 1);
+                                    lotteryNumber.setSurplusNumber(lotteryNumber.getSurplusNumber() + 1);
+                                }
+                                lotteryNumber = lotteryNumberService.save(lotteryNumber);
+                            }
+
+                        } else if ("1002".equals(userInfo.getQrScene())) {
+                            //员工
                             LotteryNumber lotteryNumber = lotteryNumberService.findByUserId(invited.get().getUserId());
                             if (lotteryNumber == null) {
                                 lotteryNumber = new LotteryNumber();
@@ -687,14 +764,13 @@ public class UserController {
                             }
                             lotteryNumber.setTotalSurplusNumber(lotteryNumber.getTotalSurplusNumber() + 1);
                             lotteryNumber.setInvitationSurplus(lotteryNumber.getInvitationSurplus() + 1);
-                            if (lotteryNumber.getInvitationSurplus() >= 5) {
+                            if (lotteryNumber.getInvitationSurplus() >= 1) {
                                 lotteryNumber.setInvitationSurplus(0);
                                 lotteryNumber.setTotalSurplusNumber(lotteryNumber.getTotalSurplusNumber() + 1);
                                 lotteryNumber.setSurplusNumber(lotteryNumber.getSurplusNumber() + 1);
                             }
                             lotteryNumber = lotteryNumberService.save(lotteryNumber);
                         }
-
                     }
                 }
             }
@@ -702,6 +778,36 @@ public class UserController {
     }
 
 
+    private String getLjjUrl(int type) {
+
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("amountType", 1);
+
+        //TODO TYPE
+//        jsonObject.put("amountType", type);
+        jsonObject.put("voucherKey", "uTjOkNtmFrd1mn7trM8tUCvLG9UzXj2G");
+        String url = null;
+        try {
+            url = "https://wechat.zhongyunkj.cn/wxljj_v2/v3/getCoupon?body=" + AESUtil.Encrypt(jsonObject.toJSONString(), AESUtil.AES_SKEY);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        String httpGet = OkhttpUtil.getInstance().httpGet(url);
+        log.info("httpGet: {}",httpGet);
+        jsonObject = JSON.parseObject(httpGet);
+        Integer status = jsonObject.getInteger("status");
+        if (status != 200) {
+            return "";
+        }
+        String ljjUrl = jsonObject.getString("index");
+        try {
+            ljjUrl = ljjUrl.replace(ljjUrl.substring(ljjUrl.indexOf("=") + 1), AESUtil.Encrypt(ljjUrl.substring(ljjUrl.indexOf("=") + 1), AESUtil.AES_SKEY));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        log.info(ljjUrl);
+        return ljjUrl;
+    }
 
 
 }

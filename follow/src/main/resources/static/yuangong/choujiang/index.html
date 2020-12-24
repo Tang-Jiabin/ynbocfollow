@@ -1,0 +1,157 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"/>
+    <title>一分抽大奖</title>
+    <link href="css/index.css" rel="stylesheet" type="text/css">
+    <link href="css/css2.css" rel="stylesheet" type="text/css">
+    <script type="text/javascript" src="js/jquery-1.10.2.js"></script>
+    <script type="text/javascript" src="js/awardrotate.js"></script>
+    <script type="text/javascript" src="js/index.js"></script>
+    <script src="js/fontscroll.js"></script>
+    <script>
+
+        $(document).ready(function () {
+            $(".cover").hide();
+            $(".covers1").hide();
+            $("#huodongguize").click(function () {
+                $(".huodongguize_bg").show();
+            });
+            $(".hide0").click(function () {
+                $(".cover").hide();
+                $(".covers2").hide();
+
+            });
+
+            $("#hide2").click(function () {
+                $(".huodongguize_bg").hide();
+            });
+            $("#zhifu").click(function () {
+                $(".zhifu_bg").show();
+            });
+            $("#zhifu_quxiao").click(function () {
+                $(".zhifu_bg").hide();
+            });
+            $("#zhifu2").click(function () {
+                $(".zhifu_bg2").show();
+            });
+            $("#zhifu_quxiao2").click(function () {
+                $(".zhifu_bg").hide();
+            });
+            $("#queding_quxiao").click(function () {
+                $(".zhifu_bg2").hide();
+
+            });
+            $("#zhifu3").click(function () {
+                $(".zhifu_bg3").show();
+            });
+            $("#zhifu_quxiao2").click(function () {
+                $(".zhifu_bg2").hide();
+
+            });
+            $("#zhifu_quxiao3").click(function () {
+                $(".zhifu_bg3").hide();
+
+            });
+            $("#zhifu_quxiao4").click(function () {
+                $(".zhifu_bg4").hide();
+
+            });
+
+            $("#erweima").click(function () {
+                $(".erweima_bg").show();
+            });
+            $("#erweima_quxiao").click(function () {
+                $(".erweima_bg").hide();
+
+            });
+        });</script>
+</head>
+<body>
+
+
+<!-- 弹出层 -->
+<div class="cover"></div>
+<div class="covers2">
+    <div class="close3"><a href="javascript:void(0)" class="hide0"><img src="images/close.png"/></a></div>
+    <div class="covers_font">
+        <div class="zhongjiang_img"><img src='' id='imgId'/></div>
+
+        <span> </span>
+        <div class="zhifu_caozuo"><a href="javascript:void(0)" class="hide0"><img src="images/lijishouxia.png"/></a>
+            <div class=" clear"></div>
+        </div>
+    </div>
+</div>
+
+<!-- 抽奖转盘 -->
+
+<div class="rotate">
+    <img id="rotate" src="images/task_draw_reward_bg.png"/>
+
+    <!-- 正常状态-->
+    <div class="pointer"><img src="images/task_draw_reward_pointer.png"/></div>
+    <!-- 正常状态 -->
+
+    <div class="jiantou"><img src="images/jiantou.png"/></div>
+    <div class="rukou">
+
+        <a href="javascript:void(0)" id="huodongguize">
+            <img src="images/yuangongrukou.png"/></a>
+        <a href="./prizeList.html"><img src="images/yuangongyingxiao.png"/></a></div>
+
+    <div class="banquan">
+        <p>如有疑问可咨询运营商电话
+        <p>400-650-6038（周一至周五9:00-18:00）
+    </div>
+    <!-- task&rules -->
+
+    <!-- task&rules -->
+    <div class="huodongguize_bg" style="display:none;">
+        <div class="guize_c">
+            <div class="guize_c_c">
+                <p><span>活动规则</span>
+                <p>1、注册完成手机号转账以后，点击抽奖和我的礼品栏高亮，抽中实物奖品及时填写邮寄地址信息，也可在我的礼品栏内填写地址信息；
+                <p>2、参与活动所获得的实物奖品将在中奖后1-3个工作日发放。
+                <p>3、参与活动所获得的积分类奖励将在7-10个工作日统一充值，用户可在掌上银行的我的积分栏查看积分信息。
+                <p>4、实物奖品发放如有疑问，可在周一至周日9：00-21:00拨打服务热线：4006870001、18879105411。（非工作时间可语音留言）
+                <p><span>奖励规则</span>
+                <p>1、【三等奖】每月一位。
+                <p>2、【二等奖】每两个月一位。
+                <p>3、【一等奖】看活动注册量的变化让客户抽取。
+                <p>4、四等奖、五等奖、六等奖的奖励按月平均分配；
+                <p>5、实物奖品领取方式将以短信形式核对，请保持手机号转账的预留手机号畅通。
+                <p>6、同一手机号码注册抽奖视为同一个用户，江西银行有权取消作弊等行为用户的奖励。
+                <p>7、奖励数量有限，先到先得。
+                <p>8、若遇特殊情况则可延迟奖励发放。
+                <p>9、活动最终解释权归江西银行所有。
+            </div>
+            <div class="close1"><a href="javascript:void(0)" id="hide2"><img src="images/close.png"/></a></div>
+        </div>
+    </div>
+    <!-- task&rules -->
+
+    <!--支付提示4-->
+    <div class="zhifu_bg4" style="display:none;">
+        <div class="zhifu_c2">
+            <p><img src="images/cry.png"/></p>
+            <p><strong>提示</strong></p>
+            <p>抱歉，您不是特邀用户
+            <p>暂不能参与此活动！</p>
+
+            <!--<p>抱歉，系统维护中
+        <p>请您稍后再试！-->
+
+            <!--<p>很遗憾，活动已结束
+        <p>期待您下次参与-->
+            <div class="close2"><a href="javascript:void(0)" id="zhifu_quxiao4"><img src="images/close.png"/></a></div>
+        </div>
+    </div>
+    <!--支付提示4-->
+</div>
+</body>
+</html>

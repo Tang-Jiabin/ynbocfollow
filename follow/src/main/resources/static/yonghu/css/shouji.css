@@ -1337,3 +1337,56 @@ ul#hehuoren_list2 li {
    .jiangjin_txt{ top:15.5rem;}
    .jiangjin_but{ top: 20.5rem;}
  }
+
+/*20201224新增*/
+.mingxi_bg {
+	width: 100%;
+	max-width: 640px;
+	height: 100%;
+	position: fixed;
+	top: 0;
+	background-image: url(../images/black.png);
+	background-repeat: repeat;
+	z-index: 100;
+}
+.yaoqingli_caozuo{
+	padding: 0px;
+	width: 70%;
+	margin-top: 0px;
+	margin-right: auto;
+	margin-bottom: 0px;
+	margin-left: auto;
+	position: absolute;
+	bottom: 1.2rem;
+	text-align: center;
+	left: 15%;
+	font-size: 14px;
+	color: #d8313e;
+}.yaoqingli_caozuo p{
+	margin: 0px;
+	padding-top: 3px;
+	padding-right: 0px;
+	padding-bottom: 0px;
+	padding-left: 0px;
+}
+table.tb{
+	margin: 0px;
+	padding: 0px; border-collapse:collapse;
+}
+table.tb tr{}
+table.tb tr td{
+	line-height: 25px;
+	border-top-width: 0px;
+	border-right-width: 0px;
+	border-bottom-width: 1px;
+	border-left-width: 0px;
+	border-top-style: solid;
+	border-right-style: solid;
+	border-bottom-style: solid;
+	border-left-style: solid;
+	border-top-color: #eee;
+	border-right-color: #eee;
+	border-bottom-color: #eee;
+	border-left-color: #eee;
+}
+table.tb tr td strong{ color:#d72b39; font-size:12px!important; font-weight:normal;}

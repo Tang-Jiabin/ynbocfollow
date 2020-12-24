@@ -1,0 +1,89 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>秒杀活动</title>
+    <link type="text/css" rel="stylesheet" href="../../yonghu/css/miaosha.css"/>
+    <link type="text/css" rel="stylesheet" href="../../yonghu/css/css.css"/>
+    <script type="text/javascript" src="../../yonghu/js/jquery1.42.min.js"></script>
+    <script type="text/javascript" src="../../yonghu/js/queryPathParam.js"></script>
+
+    <meta name="viewport" content="width=device-width initial-scale=1.0 maximum-scale=1.0 user-scalable=yes"/>
+    <script type="text/javascript">
+        $(function () {
+
+            let recordsId = GetQueryString("recordsId");
+
+            console.log(recordsId)
+
+            $.ajax({
+                url: '/ynbocfollow/staff/getPrizeInfo',
+                type: 'get',
+                dataType: 'json',
+                beforeSend: function (request) {
+                    request.setRequestHeader("X-Auth-Token", localStorage.getItem("yg_token"));
+                },
+                data: {'recordsId': recordsId},
+                success: function (data) {
+                    if (data.status !== 200) {
+                        alert(data.msg)
+                    } else {
+                        console.log(data.data)
+                        let prizeTime = data.data.recordsDate;
+                        let prizeName = data.data.amount;
+                        let prizeImg = data.data.prizeImg;
+                        $("#prizeTime").html("时间：" + prizeTime);
+                        $("#prizeName").html(prizeName + "元 微信立减金");
+                        $("#prizeImg").attr("src", prizeImg);
+                    }
+                },
+                error: function (data) {
+                    alert(data.msg)
+                }
+            })
+
+        })
+
+
+    </script>
+
+</head>
+
+<body style="background-color:#fff; background-image:none;">
+<div class="back"><a href="/ynbocfollow/yonghu/home.html"><img src="images/back.png"></a></div>
+<!--wode-->
+<div class="wode"><img src="images/wode.png"></div>
+<!--wode-->
+
+<!--xiangqing-->
+<div class="xiangqing">
+    <div class="quanma">
+        <div class="quanma_l"><img id="prizeImg" src="images/jiangpin1.png"></div>
+        <div class="quanma_r">
+            <div class="yizhongjiang">已领取</div>
+            <p><strong id="prizeName">微信立减金</strong></p>
+            <p id="prizeTime">时间：2019-01-15 16 : 25 : 04</p>
+            <!--       <p><a href="#"><img src="images/lijilingqu.png" width="70%"></a></p>-->
+
+        </div>
+        <div class=" clear"></div>
+    </div>
+    <div class="xiangqing_t">使用方法</div>
+    <div class="xiangqing_c">
+        <p>1.获奖微信立减金的用户，请点击上方【立即领取】按钮，完成立减金领取;
+        <p>2.领取成功后将收到微信支付推送的消息通知，请详细阅读通知中的使用规则；
+        <p>3.微信支付时选择使用中国银行储蓄卡支付，且支付金额不得少于获得的立减金金额，立减金额将自动抵扣；
+        <p>4. 请在在规定时间内完成使用，过期自动作废。</p>
+
+        <p><strong>注</strong>：用户点击“+”可在手机图册内选择已保存好的收款码图片，请务必上传中行收款二维码，如上传除收款码以外的图片将导致红包兑付失败，由此造成的损失由用户自行承担。
+        </p>
+    </div>
+</div>
+<!--xiangqing-->
+<div class="buzhou">
+    <p><img src="images/buzhou_03.jpg"></p>
+    <p><img src="images/buzhou_05.jpg"></p>
+</div>
+
+</body>
+</html>

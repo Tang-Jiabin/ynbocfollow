@@ -1,0 +1,72 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0" />
+<title>一分抽大奖</title>
+<link type="text/css" rel="stylesheet" href="css/index.css" />
+<link type="text/css" rel="stylesheet" href="css/css2.css" />
+<link type="text/css" rel="stylesheet" href="css/denglu.css" />
+<meta name="viewport" content="width=device-width initial-scale=1.0 maximum-scale=1.0 user-scalable=yes" />
+<script type="text/javascript" src="js/jquery-1.10.2.js"></script>
+<script type="text/javascript" src="js/yzm.js"></script>
+<script>
+
+$(document).ready(function(){
+
+  $("#zhifu_quxiao3").click(function(){
+  $(".zhifu_bg3").hide();
+ 
+  });
+  $("#zhifu_quxiao4").click(function(){
+  $(".zhifu_bg4").hide();
+ 
+  });
+  
+
+});</script>
+</head>
+<body style="background-image:none; background-color:#fdc9a3">
+<div class="login_banner"><img src="images/home_03.jpg" /></div>
+<div class="biaodan">
+  <div class="title" align="center"><img src="images/denglu.png"  width="70%"/></div>
+  <div class="biaodan1">
+    <input type="text" value="请输入手机号" class="txt1" id="phone1" onfocus="if(this.value==defaultValue) {this.value='';this.type='text'}" onblur="if(!value) {value=defaultValue; this.type='text';}"  />
+  </div>
+  <div class="biaodan2"><span>
+    <input id="btnSendCode1" type="button" class="yanzhengma" value="获取验证码" onClick="sendMessage1()" />
+    </span>
+    <input type="text" value="验证码" class="txt1" id="code1" onfocus="if(this.value==defaultValue) {this.value='';this.type='text'}" onblur="if(!value) {value=defaultValue; this.type='text';}"  />
+  </div>
+  <div class="clear"></div>
+  <div class="biaodan3">
+    <input name="" type="button" class="but1" />
+  </div>
+</div>
+<div class="banquan">
+  <p>如有疑问可咨询运营商电话
+  <p>400-650-6038（周一至周五9:00-18:00） 
+</div>
+<!-- task&rules --> 
+
+<!--支付提示4-->
+<div class="zhifu_bg4" style="display:none;">
+  <div class="zhifu_c2" >
+    <p><img src="images/cry.png" /></p>
+    <p><strong>提示</strong></p>
+    <p>抱歉，您不是特邀用户
+    <p>暂不能参与此活动！</p>
+    
+    <!--<p>抱歉，系统维护中
+<p>请您稍后再试！--> 
+    
+    <!--<p>很遗憾，活动已结束
+<p>期待您下次参与-->
+    <div class="close2"><a  href="javascript:void(0)"id="zhifu_quxiao4" ><img src="images/close.png" /></a></div>
+  </div>
+</div>
+<!--支付提示4-->
+
+</body>
+</html>

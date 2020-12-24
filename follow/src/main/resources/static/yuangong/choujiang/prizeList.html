@@ -1,0 +1,97 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>奖品列表</title>
+    <link type="text/css" rel="stylesheet" href="../../yonghu/css/miaosha.css"/>
+    <link type="text/css" rel="stylesheet" href="../../yonghu/css/css.css"/>
+
+    <script src="js/jquery-1.10.2.js"></script>
+    <meta name="viewport" content="width=device-width initial-scale=1.0 maximum-scale=1.0 user-scalable=yes"/>
+</head>
+
+<body style="background-color:#fff; background-image:none;">
+<div class="back"><a href="../home.html"><img src="images/back.png"></a></div>
+<!--wode-->
+<div class="wode"><img src="images/wode.png"></div>
+<!--wode-->
+
+<!--xiangqing-->
+<div class="xiangqing">
+
+</div>
+<!--xiangqing-->
+
+</body>
+<script type="text/javascript">
+
+    $(function () {
+        $.ajax({
+            url: '/ynbocfollow/staff/getPrizeList',
+            type: 'get',
+            dataType: 'json',
+            beforeSend: function (request) {
+                request.setRequestHeader("X-Auth-Token", localStorage.getItem("yg_token"));
+            },
+            data: {},
+            success: function (data) {
+
+                if (data.status != 200) {
+                    alert(data.msg)
+                    return;
+                }
+
+                if (data.data.count >= 1) {
+
+                    let prizeList = data.data;
+
+                    let count = prizeList.count;
+                    let collectRecordsList = prizeList.collectRecordsList;
+                    let prizeHtml = "";
+                    for (let i = 0; i < count; i++) {
+                        let prizeName = collectRecordsList[i].prizeName;
+                        let prizeImg = collectRecordsList[i].prizeImg;
+                        let recordsId = collectRecordsList[i].recordsId;
+                        let status = "已领取";
+                        if (collectRecordsList[i].status === 1) {
+                            status = "未领取"
+                        }
+                        let prizeTime = collectRecordsList[i].recordsDate;
+                        let prizeType = collectRecordsList[i].type;
+                        let link = "#";
+                        if (prizeType === 'WECHAT_GOLD') {
+                            link = "lijianjin.html?recordsId=" + recordsId;
+                        } else if (prizeType === 'PHONE_BILL') {
+                            link = "huafei.html?recordsId=" + recordsId;
+                        } else if (prizeType == 'PHONE') {
+                            link = "shouji.html?recordsId=" + recordsId;
+                        }
+
+                        prizeHtml = prizeHtml + '' +
+                            '<div class="quanma">' +
+                            '    <div class="quanma_l"><img src="' + prizeImg + '"></div>' +
+                            '    <div class="quanma_r">' +
+                            '        <div class="yizhongjiang">' + status + '</div>' +
+                            '        <p><strong>' + prizeName + '</strong></p>' +
+                            '        <p>时间：' + prizeTime + '</p>' +
+                            '        <p><a href="' + link + '">点击查看详情 ></a></p>' +
+                            '    </div>' +
+                            '    <div class="clear"></div>' +
+                            '</div>';
+                    }
+                    $('.xiangqing').html(prizeHtml);
+
+                } else {
+                    window.location.href = "/ynbocfollow/yonghu/prizeEmpty.html";
+                }
+            },
+            error: function (data) {
+
+                alert("请稍后再试！")
+            }
+        })
+
+    });
+
+</script>
+</html>

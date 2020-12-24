@@ -37,6 +37,7 @@
                         if (data.status != 200) {
                             alert(data.msg)
                         } else {
+                            localStorage.setItem("yh_token",data.data)
                             window.location.href = "https://wechat.zhongyunkj.cn/ynbocfollow/yonghu/home.html?yh_token="+data.data;
                         }
                     },

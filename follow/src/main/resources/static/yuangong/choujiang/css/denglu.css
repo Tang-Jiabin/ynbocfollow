@@ -1,0 +1,97 @@
+@charset "utf-8";
+/* CSS Document */
+/*20191220*/
+.login_banner {
+	width: 100%; max-width:640px; position:absolute; top:0; z-index:-1;
+}
+.login_banner img {
+	width: 100%;
+}
+
+.but1 {
+	background-image: url(../images/login.png);
+	background-repeat: no-repeat;
+	background-position: center center;
+	background-size: contain;
+	background-color: transparent;
+	padding: 0px;
+	height: 48px;
+	width: 272px;
+	margin-top: 10px;
+	margin-right: auto;
+	margin-bottom: 0px;
+	margin-left: auto;
+	border-top-width: 0px;
+	border-right-width: 0px;
+	border-bottom-width: 0px;
+	border-left-width: 0px;
+}
+.biaodan {
+	margin-top: 23rem;
+	margin-right: auto;
+	margin-bottom: 0px;
+	margin-left: auto;
+	width: 72%;
+	border: 0px dotted #d10b1c;
+	background-color: #fff;
+	border-radius: 10px;
+	padding-top: 30px;
+	padding-right: 8%;
+	padding-bottom: 30px;
+	padding-left: 8%;
+}
+.biaodan1 {
+	line-height: 40px;
+	background-size: 5%;
+	border-radius: 5px;
+	background-repeat: no-repeat;
+	background-position: left center;
+	padding-top: 0px;
+	padding-right: 0px;
+	padding-bottom: px;
+	padding-left: 5%;
+	background-color: #fff;
+	border: 1px solid #ccc;
+	margin-top: 20px;
+	height: 40px;
+}
+.biaodan2 {
+	line-height: 45px;
+	background-size: 5%;
+	border-radius: 5px;
+	background-repeat: no-repeat;
+	background-position: left center;
+	padding-top: 0px;
+	padding-right: 0px;
+	padding-bottom: 0px;
+	padding-left: 5%;
+	background-color: #fff;
+	border: 1px solid #ccc;
+	margin-top: 10px;
+	margin-right: 0px;
+	margin-bottom: 0px;
+	margin-left: 0px;height: 40px;
+}
+.biaodan2 span {
+	float: right;
+}
+.yanzhengma {
+	color: #ef3219;
+	border: 0px solid #d10b1c;
+	border-radius: 15px; /* 所有角都使用半径为5px的圆角，此属性为CSS3标准属性 */
+	margin-right: 5px;
+	font-size: 12px;
+	padding-top: 0px;
+	padding-right: 10px;
+	padding-bottom: 5px;
+	padding-left: 10px;
+	background-color: transparent;
+	line-height: 40px;
+}.txt1 {
+	line-height: 38px;
+	background-color: #f7f7f7;
+	width: 60%;
+	color: #333;
+	border: none; outline:none;
+}
+

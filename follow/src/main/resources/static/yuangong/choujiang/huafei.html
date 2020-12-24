@@ -1,0 +1,145 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>秒杀活动</title>
+    <link type="text/css" rel="stylesheet" href="../../yonghu/css/miaosha.css"/>
+    <link type="text/css" rel="stylesheet" href="../../yonghu/css/css.css"/>
+    <script type="text/javascript" src="../../yonghu/js/jquery1.42.min.js"></script>
+    <script type="text/javascript" src="../../yonghu/js/queryPathParam.js"></script>
+    <script type="text/javascript">
+        $(function () {
+
+
+            let recordsId = GetQueryString("recordsId");
+
+            console.log(recordsId)
+
+            $.ajax({
+                url: '/ynbocfollow/staff/getPrizeInfo',
+                type: 'get',
+                dataType: 'json',
+                beforeSend: function (request) {
+                    request.setRequestHeader("X-Auth-Token", localStorage.getItem("yg_token"));
+                },
+                data: {'recordsId': recordsId},
+                success: function (data) {
+                    if (data.status !== 200) {
+                        alert(data.msg)
+                    } else {
+                        let prizeTime = data.data.recordsDate;
+                        let prizeName = data.data.prizeName;
+                        let prizeImg = data.data.prizeImg;
+                        let prizeStatus = data.data.status;
+                        $("#prizeTime").html("时间：" + prizeTime);
+                        $("#prizeName").html(prizeName);
+                        $("#prizeImg").attr("src", prizeImg);
+                        let status = "已领取";
+                        if(prizeStatus === 1){
+                            status = "未领取";
+                        }
+                        $("#status").html(status)
+                    }
+                },
+                error: function (data) {
+                    alert(data.msg)
+                }
+            })
+
+        })
+
+
+    </script>
+    <script>
+
+        $(document).ready(function () {
+            $(".chongzhi_but").click(function () {
+                // $(".tishi_bg").show();
+                console.log("提交表单")
+
+                let recordsId = GetQueryString("recordsId");
+                let phone = $("#phone").val();
+
+                $.ajax({
+                    url: '/ynbocfollow/staff/getUserInfo',
+                    type: 'get',
+                    dataType: 'json',
+                    beforeSend: function (request) {
+                        request.setRequestHeader("X-Auth-Token", localStorage.getItem("yg_token"));
+                    },
+                    data: {'recordsId': recordsId,"phone":phone,"name":"","address":""},
+                    success: function (data) {
+                        if (data.status !== 200) {
+                            alert(data.msg)
+                        } else {
+                            alert("领取成功")
+                        }
+                    },
+                    error: function (data) {
+                        alert(data.msg)
+                    }
+                })
+            });
+
+
+
+            $(".hide").click(function () {
+                $(".tishi_bg").hide();
+
+            });
+            $(".close").click(function () {
+                $(".huodongguize_bg").hide();
+
+            });
+
+        });</script>
+    <meta name="viewport" content="width=device-width initial-scale=1.0 maximum-scale=1.0 user-scalable=yes"/>
+</head>
+
+<body style="background-color:#fff; background-image:none;">
+<div class="back"><a href="/ynbocfollow/yonghu/home.html"><img src="images/back.png"></a></div>
+<!--wode-->
+<div class="wode"><img src="images/wode.png"></div>
+<!--wode-->
+
+<!--xiangqing-->
+<div class="xiangqing">
+    <div class="quanma">
+        <div class="quanma_l"><img id="prizeImg" src="images/jiangpin3.png"></div>
+        <div class="quanma_r">
+            <div class="yizhongjiang" id="status">已中奖</div>
+            <p><strong id="prizeName">1元话费券</strong></p>
+            <p id="prizeTime">时间：2019-01-15 16 : 25 : 04</p>
+
+        </div>
+        <div class=" clear"></div>
+    </div>
+    <div class="xiangqing_t">领取规则</div>
+    <div class="chongzhi">
+        <input id="phone" name="" type="text" placeholder="请输入充值手机号" class="chongzhi_txt"><input name="提交" type="submit" value="提交"
+                                                                                      class="chongzhi_but" id="tijiao">
+        <div class="clear"></div>
+    </div>
+    <div class="xiangqing_c">
+        <p>1.话费将直接充值进您参与活动使用的手机银行的手机号内，预计5-10分钟内到账，如遇运营商网络波动预计72小时内到账。
+        <p>2.该卡仅在移动/联通/电信运营商三网直充使用，具体以运营商短信到账为准。
+        <p>3.如遇网商虚拟号或其他原因导致话费充值不成功，请联系运营商更换手机号进行充值。
+        <p>4.活动过程中如遇问题欢迎拨打运营商客服电话：400-650-6038（周一至周五9:00–17:30）。</p>
+
+        </p>
+    </div>
+</div>
+<!--xiangqing-->
+<!--弹窗3-->
+<div class="tishi_bg" style="display:none;">
+    <div class="tishi_img">
+        <p><strong>提示</strong></p>
+        <img src="images/smile.png">
+        <p>很遗憾，您暂时没有抽奖机会
+        <p>赶快去邀请好友参与活动吧~</p>
+    </div>
+    <div class="but_bg"><img src="images/close3.png" class="hide"></div>
+</div>
+<!--弹窗3-->
+</body>
+</html>

@@ -277,7 +277,7 @@
 
                 let trhead = '<tr>' +
                     '<td bgcolor="#43abee" style="color:#fff">网点名称</td>' +
-                    '<td bgcolor="#43abee" style="color:#fff">全量客户数</td>' +
+                    '<td bgcolor="#43abee" style="color:#fff">官微增粉数</td>' +
                     '</tr>'
 
                 let trbody;
@@ -334,14 +334,18 @@
         let trhead = '<tr>' +
             '<td bgcolor="#43abee" style="color:#fff"> 排行</td>' +
             '<td bgcolor="#43abee" style="color:#fff">地区</td>' +
-            '<td bgcolor="#43abee" style="color:#fff">新激活<br>客户数</td>' +
-            '<td bgcolor="#43abee" style="color:#fff">新激活<br>效能</td>' +
-            '<td bgcolor="#43abee" style="color:#fff">二维码<br>支付<br>客户数</td>' +
-            '<td bgcolor="#43abee" style="color:#fff">二维码<br>效能</td>' +
+            '<td bgcolor="#43abee" style="color:#fff">官微<br>增粉数</td>' +
+            '<td bgcolor="#43abee" style="color:#fff">增粉<br>效能</td>' +
+            '<td bgcolor="#43abee" style="color:#fff">手机<br>银行<br>支付数</td>' +
+            '<td bgcolor="#43abee" style="color:#fff">支付<br>效能</td>' +
             '<td bgcolor="#43abee" style="color:#fff">官微<br>领奖率</td>' +
             '</tr>'
 
         let trbody;
+        let activationCount = 0;
+        let activationEffectCount = 0;
+        let payCount = 0;
+        let payEffectCount = 0;
 
         for (let i = 0; i < dataList.length; i++) {
 
@@ -355,6 +359,10 @@
 
             mapData(branch, activation, activationEffect)
 
+            activationCount = activationCount + activation;
+            activationEffectCount = activationEffectCount + activationEffect;
+            payCount = payCount + pay;
+            payEffectCount = payEffectCount + payEffect;
 
             trbody = trbody + '<tr onclick="jumDetailed(this)" data="'+branch+'">' +
                 '<td>' + (i + 1) + '</td>' +
@@ -368,6 +376,15 @@
 
 
         }
+        trbody = trbody + '<tr >' +
+            '<td></td>' +
+            '<td>合计</td>' +
+            '<td>' + activationCount + '</td>' +
+            '<td>' + activationEffectCount + '</td>' +
+            '<td>' + payCount + '</td>' +
+            '<td>' + payEffectCount + '</td>' +
+            '<td>0</td>' +
+            '</tr>';
 
         $('#tb-1').html(trhead + trbody);
 
@@ -472,46 +489,7 @@
 
                 let dataList = data.data;
 
-                let trhead = '<tr>' +
-                    '<td bgcolor="#43abee" style="color:#fff"> 排行</td>' +
-                    '<td bgcolor="#43abee" style="color:#fff">地区</td>' +
-                    '<td bgcolor="#43abee" style="color:#fff">新激活<br>客户数</td>' +
-                    '<td bgcolor="#43abee" style="color:#fff">新激活<br>效能</td>' +
-                    '<td bgcolor="#43abee" style="color:#fff">二维码<br>支付<br>客户数</td>' +
-                    '<td bgcolor="#43abee" style="color:#fff">二维码<br>效能</td>' +
-                    '<td bgcolor="#43abee" style="color:#fff">官微<br>领奖率</td>' +
-                    '</tr>'
-
-                let trbody;
-
-                for (let i = 0; i < dataList.length; i++) {
-
-                    let branch = dataList[i].branch;
-                    let activation = dataList[i].activation;
-                    let activationEffect = dataList[i].activationEffect;
-                    let pay = dataList[i].pay;
-                    let payEffect = dataList[i].payEffect;
-                    let receive = dataList[i].receive;
-                    let receiveEffect = dataList[i].receiveEffect;
-
-                    mapData(branch, activation, activationEffect)
-
-                    if (i < 10) {
-                        trbody = trbody + '<tr>' +
-                            '<td>' + (i + 1) + '</td>' +
-                            '<td>' + branch + '</td>' +
-                            '<td>' + activation + '</td>' +
-                            '<td>' + activationEffect + '</td>' +
-                            '<td>' + pay + '</td>' +
-                            '<td>' + payEffect + '</td>' +
-                            '<td>' + receiveEffect + '%</td>' +
-                            '</tr>';
-                    }
-
-                }
-
-                $('#tb-1').html(trhead + trbody);
-
+                initData(dataList)
             },
             error: function (data) {
                 alert("系统繁忙，请稍后再试")

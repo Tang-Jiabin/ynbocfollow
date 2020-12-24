@@ -154,7 +154,7 @@ public class LeaderController {
             if (activation == 0 || receive == 0) {
                 receiveEffect = 0;
             } else {
-                receiveEffect = activation / receive;
+                receiveEffect = (receive / activation) * 100;
             }
 
             if (pay == 0 || supportNum == 0) {
@@ -269,7 +269,7 @@ public class LeaderController {
             branchDTO.setNotUse(supportNum - use);
             int utilization = 0;
             if (supportNum != 0 && use != 0) {
-                utilization = supportNum / use;
+                utilization = use * 100 / supportNum;
             }
             branchDTO.setUtilization(utilization);
             branchDTOList.add(branchDTO);
@@ -278,7 +278,11 @@ public class LeaderController {
         return ServerResponse.createMessage(ServerResponse.OK, "成功", branchDTOList);
     }
 
-
+    /**
+     * 网点抽奖
+     * @param name 网点名称
+     * @return 详细数据
+     */
     @GetMapping(value = "getBusinessInfo")
     public ServerResponse<List<EffectDTO>> getBusinessInfo(String name) {
 
@@ -298,10 +302,10 @@ public class LeaderController {
 
         List<String> staffUserIdList = staffList.stream().map(StaffInfo::getUserId).collect(Collectors.toList());
 
-        Date startDate = startDate = DateUtil.getSpecifiedDate(DateUtil.getTodayZeroHours(), -365);
+//        Date startDate = startDate = DateUtil.getSpecifiedDate(DateUtil.getTodayZeroHours(), -365);
         Date endDate = new Date();
 
-        List<InvitationRecord> invitationList = invitationRecordRepository.findAllByInviteUserIdInAndAcceptDateIsBetween(staffUserIdList, startDate, endDate);
+        List<InvitationRecord> invitationList = invitationRecordRepository.findAllByInviteUserIdInAndAcceptDateIsBetween(staffUserIdList, DateUtil.getTodayZeroHours(), endDate);
 
         List<EffectDTO> effectList = new ArrayList<>();
 
@@ -343,7 +347,7 @@ public class LeaderController {
             if (activation == 0 || receive == 0) {
                 receiveEffect = 0;
             } else {
-                receiveEffect = activation / receive;
+                receiveEffect = (receive / activation) * 100;
             }
 
 
@@ -366,18 +370,18 @@ public class LeaderController {
         List<StaffInfo> staffInfoList = staffInfoRepository.findAll();
         String path = "/Users/tang/Desktop/1.xlsx";
         String[] title = {"支行", "分行", "员工号", "姓名"};
-        List<Map<String,String>> list = new ArrayList<>();
-        Map<String,String> map = new HashMap<>();
+        List<Map<String, String>> list = new ArrayList<>();
+        Map<String, String> map = new HashMap<>();
         for (Branch branch : branchList) {
             for (BusinessSupport support : supportList) {
                 if (support.getBranchId().equals(branch.getBranchId())) {
                     for (StaffInfo staffInfo : staffInfoList) {
                         if (support.getSupportId().equals(staffInfo.getSupportId())) {
                             map = new HashMap<>();
-                            map.put("支行",branch.getBranchName());
-                            map.put("分行",support.getSupportName());
-                            map.put("员工号",staffInfo.getJobNum());
-                            map.put("姓名",staffInfo.getName());
+                            map.put("支行", branch.getBranchName());
+                            map.put("分行", support.getSupportName());
+                            map.put("员工号", staffInfo.getJobNum());
+                            map.put("姓名", staffInfo.getName());
                             list.add(map);
                         }
                     }
@@ -385,7 +389,7 @@ public class LeaderController {
             }
         }
 
-        FileUtil.exportFile(title,list,path);
+        FileUtil.exportFile(title, list, path);
 
     }
 }

@@ -1,7 +1,9 @@
 package com.zykj.follow.controller;
 
 import com.alibaba.fastjson.JSONObject;
+import com.zykj.follow.common.AliasMethod;
 import com.zykj.follow.common.Module;
+import com.zykj.follow.common.PrizeType;
 import com.zykj.follow.common.annotation.Authorization;
 import com.zykj.follow.common.http.ServerResponse;
 import com.zykj.follow.common.interceptor.TokenManager;
@@ -9,10 +11,7 @@ import com.zykj.follow.dto.StaffRankingDto;
 import com.zykj.follow.pojo.*;
 import com.zykj.follow.repository.BusinessSupportRepository;
 import com.zykj.follow.service.*;
-import com.zykj.follow.utils.BocWebPayUtil;
-import com.zykj.follow.utils.PhoneUtil;
-import com.zykj.follow.utils.RedisUtil;
-import com.zykj.follow.utils.SnowflakeIdFactory;
+import com.zykj.follow.utils.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -53,10 +52,13 @@ public class StaffController {
     private final InvitationRecordService recordService;
     private final PayOrderService payOrderService;
     private final BusinessSupportRepository supportRepository;
+    private final LotteryNumberService lotteryNumberService;
+    private final StaffPrizeInfoService staffPrizeInfoService;
+    private final CollectRecordsService collectRecordsService;
 
 
     @Autowired
-    public StaffController(TokenManager tokenManager, UserService userService, RedisUtil redisUtil, StaffService staffService, WeChatUserQrInfoService qrInfoService, InvitationRecordService recordService, PayOrderService payOrderService, BusinessSupportRepository supportRepository) {
+    public StaffController(TokenManager tokenManager, UserService userService, RedisUtil redisUtil, StaffService staffService, WeChatUserQrInfoService qrInfoService, InvitationRecordService recordService, PayOrderService payOrderService, BusinessSupportRepository supportRepository, LotteryNumberService lotteryNumberService, StaffPrizeInfoService staffPrizeInfoService, CollectRecordsService collectRecordsService) {
         this.tokenManager = tokenManager;
         this.userService = userService;
         this.redisUtil = redisUtil;
@@ -65,6 +67,9 @@ public class StaffController {
         this.recordService = recordService;
         this.payOrderService = payOrderService;
         this.supportRepository = supportRepository;
+        this.lotteryNumberService = lotteryNumberService;
+        this.staffPrizeInfoService = staffPrizeInfoService;
+        this.collectRecordsService = collectRecordsService;
     }
 
     /**
@@ -286,7 +291,7 @@ public class StaffController {
             for (StaffInfo staffInfo : staffInfoList) {
                 if (staffInfo.getUserId().equals(userInfo.getUserId())) {
                     for (BusinessSupport support : supportList) {
-                        if(support.getSupportId().equals(staffInfo.getSupportId())){
+                        if (support.getSupportId().equals(staffInfo.getSupportId())) {
                             staffRankingDto.setBranch(support.getSupportName());
                         }
                     }
@@ -326,7 +331,7 @@ public class StaffController {
         JSONObject json = JSONObject.parseObject(state);
         String staffPhone = json.getString("page");
 
-        log.info(staffPhone);
+        log.info("员工手机号" + staffPhone);
         WechatUserInfo inviteUser = userService.findByStaffMobile(staffPhone);
 
         if (!StringUtils.hasLength(staffPhone)) {
@@ -402,5 +407,216 @@ public class StaffController {
         recordService.add(recordId, new Date(), payOrder.getInviteUserId(), payOrder.getAcceptUserId(), "PAY", 3);
         return "";
     }
+
+
+    /**
+     * 抽奖
+     *
+     * @param tokenPhone token
+     * @return 抽奖结果
+     */
+    @Authorization
+    @GetMapping(value = "luckDraw")
+    public ServerResponse<JSONObject> luckDraw(@RequestAttribute String tokenPhone) {
+
+        WechatUserInfo userInfo = userService.findByStaffMobile(tokenPhone);
+        if (userInfo == null) {
+            return ServerResponse.createMessage(411, "请绑定手机号后重试");
+        }
+
+        //验证抽奖次数
+        LotteryNumber lotteryNumber = lotteryNumberService.findByUserId(userInfo.getUserId());
+        if (lotteryNumber == null) {
+            return ServerResponse.createMessage(412, "请稍后再试");
+        }
+        if (lotteryNumber.getSurplusNumber() <= 0) {
+            return ServerResponse.createMessage(413, "抽奖次数不足！");
+        }
+
+        //获取奖品列表
+        List<StaffPrizeInfo> prizeInfoList = staffPrizeInfoService.getSurplusInfo();
+
+        //抽取奖品
+        StaffPrizeInfo prizeInfo;
+        if (prizeInfoList.size() >= 1) {
+            prizeInfo = getPrizeInfo(prizeInfoList);
+        } else {
+            return ServerResponse.createMessage(410, "当前奖品已派发完毕，请稍后重新参与");
+        }
+        if (prizeInfo == null) {
+            return ServerResponse.createMessage(410, "当前奖品已派发完毕，请稍后重新参与");
+        }
+
+        JSONObject resultData = new JSONObject();
+
+        //type 类型 0-立减金  1-谢谢参与  2-话费  3-手机
+        PrizeType prizeType = prizeInfo.getType();
+
+        if (prizeType != PrizeType.THANKS) {
+            //写入数据库
+            SnowflakeIdFactory factory = new SnowflakeIdFactory(1L, 1L);
+            String orderId = String.valueOf(factory.nextId());
+            CollectRecords collectRecords = new CollectRecords();
+            collectRecords.setRecordsId(orderId);
+            collectRecords.setUserId(userInfo.getUserId());
+            collectRecords.setPhone(tokenPhone);
+            collectRecords.setPrizeName(prizeInfo.getPrizeName());
+            collectRecords.setPrizeImg(prizeInfo.getPrizeImg());
+            collectRecords.setType(prizeInfo.getType());
+            collectRecords.setRecordsDate(new Date());
+            collectRecords.setAmount(prizeInfo.getAmount());
+            collectRecords.setStatus(1);
+            collectRecordsService.save(collectRecords);
+        }
+        resultData.put("prizeId", prizeInfo.getPrizeId());
+        resultData.put("prizeName", prizeInfo.getPrizeName());
+        resultData.put("prizeImg", prizeInfo.getPrizeImg());
+//
+        //减去抽奖次数
+        prizeInfo.setSurplus(prizeInfo.getSurplus() - 1);
+        prizeInfo = staffPrizeInfoService.save(prizeInfo);
+        lotteryNumber.setSurplusNumber(lotteryNumber.getSurplusNumber() - 1);
+        lotteryNumberService.save(lotteryNumber);
+
+        return ServerResponse.createMessage(ServerResponse.OK, "成功", resultData);
+    }
+
+    /**
+     * 按照几率抽奖
+     *
+     * @param prizeInfoList 奖品信息集合
+     * @return 奖品
+     */
+    private StaffPrizeInfo getPrizeInfo(List<StaffPrizeInfo> prizeInfoList) {
+        TreeMap<Integer, Double> map = new TreeMap<Integer, Double>();
+        prizeInfoList.forEach(staffPrizeInfo -> map.put(staffPrizeInfo.getPrizeId(), staffPrizeInfo.getProbability()));
+
+        List<Double> list = new ArrayList<Double>(map.values());
+        List<Integer> gifts = new ArrayList<Integer>(map.keySet());
+
+        AliasMethod method = new AliasMethod(list);
+        int index = method.next();
+        Integer keyNum = gifts.get(index);
+
+        //测试
+        Optional<StaffPrizeInfo> cartOptional = prizeInfoList.stream().filter(item -> item.getPrizeId().equals(keyNum)).findFirst();
+        if (cartOptional.isPresent()) {
+            return cartOptional.get();
+        } else {
+            log.info("奖品id错误：id" + keyNum);
+            return null;
+        }
+    }
+
+    /**
+     * 获取奖品列表
+     *
+     * @param tokenPhone 手机号
+     * @return 奖品列表
+     */
+    @Authorization
+    @GetMapping(value = "getPrizeList")
+    public ServerResponse<JSONObject> getPrizeList(@RequestAttribute String tokenPhone) {
+        WechatUserInfo userInfo = userService.findByStaffMobile(tokenPhone);
+
+        List<CollectRecords> collectRecordsList = collectRecordsService.findAllByUserId(userInfo.getUserId());
+        LotteryNumber lotteryNumber = lotteryNumberService.findByUserId(userInfo.getUserId());
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("count", collectRecordsList.size());
+        jsonObject.put("collectRecordsList", collectRecordsList);
+        jsonObject.put("surplusNumber", lotteryNumber.getSurplusNumber());
+
+        return ServerResponse.createMessage(200, "成功", jsonObject);
+
+
+    }
+
+    /**
+     * 查看奖品信息
+     *
+     * @param recordsId  奖品id
+     * @param tokenPhone 手机号
+     * @return 奖品详情
+     */
+    @Authorization
+    @GetMapping(value = "getPrizeInfo")
+    public ServerResponse<JSONObject> getPrizeInfo(@RequestParam String recordsId, @RequestAttribute String tokenPhone) {
+
+        CollectRecords collectRecords = collectRecordsService.findByRecordsId(recordsId);
+        if (collectRecords == null) {
+            return ServerResponse.createMessage(411, "未查询到奖品信息", null);
+        }
+        JSONObject jsonObject = (JSONObject) JSONObject.toJSON(collectRecords);
+
+        return ServerResponse.createMessage(200, "成功", jsonObject);
+    }
+
+    /**
+     * 领奖
+     *
+     * @param tokenPhone 登录信息
+     * @param recordsId  奖品id
+     * @param phone      领奖手机号
+     * @param address    地址
+     * @param name       名字
+     * @return 领取状态
+     */
+    @Authorization
+    @GetMapping(value = "getUserInfo")
+    public synchronized ServerResponse<String> getUserInfo(@RequestAttribute String tokenPhone, @RequestParam String recordsId, @RequestParam String phone, @RequestParam String address, @RequestParam String name) {
+
+        log.info("token{} 手机号{} 姓名{} 地址{}", tokenPhone, phone, name, address);
+
+        WechatUserInfo userInfo = userService.findByStaffMobile(tokenPhone);
+        if (userInfo == null) {
+            return ServerResponse.createMessage(411, "用户不存在");
+        }
+
+        CollectRecords collectRecords = collectRecordsService.findByRecordsId(recordsId);
+
+        if (collectRecords == null) {
+            return ServerResponse.createMessage(412, "用户不存在");
+        }
+
+        if (collectRecords.getStatus() != 1) {
+            return ServerResponse.createMessage(414, "不能重复领取");
+        }
+
+        if (!StringUtils.hasLength(phone)) {
+            return ServerResponse.createMessage(413, "请输入手机号");
+        }
+
+        if (collectRecords.getType() == PrizeType.PHONE_BILL) {
+            collectRecords.setStatus(2);
+            collectRecords.setReceiveDate(new Date());
+            collectRecordsService.save(collectRecords);
+            String money = collectRecords.getAmount().toString();
+            SnowflakeIdFactory factory = new SnowflakeIdFactory(SnowflakeIdFactory.getWorkerId(), 1L);
+            String orderId = String.valueOf(factory.nextId());
+            int state = HFUtils.submitOrder(phone, orderId, money, HFUtils.hfUrl, HFUtils.szAgentId, HFUtils.key);
+            log.info("充值话费 手机号{} 金额{} 状态{}", phone, money, state);
+        } else if (collectRecords.getType() == PrizeType.PHONE) {
+
+            if (!StringUtils.hasLength(name) || !StringUtils.hasLength(phone) || !StringUtils.hasLength(address)) {
+                return ServerResponse.createMessage(415, "请填写领取信息");
+            }
+
+        } else if (collectRecords.getType() == PrizeType.WECHAT_GOLD) {
+            collectRecords.setStatus(2);
+            collectRecords.setReceiveDate(new Date());
+            collectRecordsService.save(collectRecords);
+            String money = collectRecords.getAmount().toString();
+            HbUtil hbUtil = new HbUtil();
+            String hb = hbUtil.hb(userInfo.getOpenId(), money);
+            log.info("红包发送状态：{}",hb);
+
+        } else {
+            return ServerResponse.createMessage(412, "用户不存在");
+        }
+
+
+        return ServerResponse.createMessage(ServerResponse.OK, "成功");
+    }
+
 
 }

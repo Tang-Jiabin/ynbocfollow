@@ -30,7 +30,7 @@ public class Module {
     public static final String USER_INFO_URL = "https://api.weixin.qq.com/cgi-bin/user/info?access_token=%s&openid=%s&lang=zh_CN";
     public static final String GET_ACCESS_TOKEN = "http://wechat.zhongyunkj.cn/zykj_wx/weixin/back/weixinGYS/authentication/getAccessToken";
     public static final String GET_QR_CODE_URL = "https://mp.weixin.qq.com/cgi-bin/showqrcode?ticket=TICKET";
-    public static final String GET_LJJ_AUTH_URL = "https://wechat.zhongyunkj.cn/wx_ljj/v3/getCoupon?amountType=TYPE&voucherKey=KEY";
+    public static final String GET_LJJ_AUTH_URL = "https://wechat.zhongyunkj.cn/wxljj_v2/v3/gotoOAuth?voucherDetilsKey=KEY";
     public static final String GET_LJJ_URL = "https://wechat.zhongyunkj.cn/wx_ljj/v3/couponSend?voucherDetilsKey=KEY";
     public static final String LJJ_KEY = "uTjOkNtmFrd1mn7trM8tUCvLG9UzXj2G";
     public static final String ADD_SCENE_QR_CODE = "ADD_SCENE_QR_CODE";

@@ -9,6 +9,7 @@
     <script type="text/javascript" src="js/jquery1.42.min.js"></script>
     <script type="text/javascript" src="js/yzm.js"></script>
     <script>
+
         function GetQueryString(name) {
             var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
             var r = window.location.search.substr(1).match(reg);
@@ -22,9 +23,9 @@
             yh_token = GetQueryString("token");
 
             if (yh_token == null) {
-                yh_token = localStorage.getItem("yh_token", yh_token);
+                yh_token = localStorage.getItem("yh_token");
                 if (yh_token == null) {
-                    window.location.href = "/ynbocfollow/yonghu/index.html";
+                    window.location.href = "/ynbocfollow/user/getAuthLink?from=user";
                 }
             }
 
@@ -42,24 +43,50 @@
                 success: function (data) {
 
                     if (data.status != 200) {
-                        window.location.href = "https://wechat.zhongyunkj.cn/ynbocfollow/user/getAuthLink?from=user";
+                        window.location.href = "/ynbocfollow/user/getAuthLink?from=user";
                     }
 
                     surplusNumber = data.data.surplusNumber;
                     let nickname = data.data.nickname;
                     let headImgUrl = data.data.headImgUrl;
                     let activityMobile = data.data.activityMobile;
+                    let invitationTotal = data.data.invitationTotal;
+                    let inviteList = data.data.inviteList;
 
                     if (headImgUrl != null) {
                         $("#headImgUrl").attr("src", headImgUrl)
                     }
                     $("#nickname").html(nickname)
+                    $("#invitTotal").html("您已累计邀请" + invitationTotal + "人")
                     $("#activityMobile").html(activityMobile)
                     $("#surplusNumber").html(surplusNumber)
+
+                    let length = inviteList.length
+
+                    let trhead = '<tr>' +
+                        '<td style="background-color:#ffcecc; color:#d40f22; font-weight:bold">时间</td>\n' +
+                        '<td style="background-color:#ffcecc; color:#d40f22; font-weight:bold">昵称</td>\n' +
+                        '<td style="background-color:#ffcecc; color:#d40f22; font-weight:bold">状态</td>\n' +
+                        '</tr>'
+
+                    let trbody = ''
+
+                    for (let i = 0; i < length; i++) {
+
+                        trbody = trbody + '<tr>' +
+                            '<td>' + inviteList[i].acceptDate + '</td>' +
+                            '<td>' + inviteList[i].nickname + '</td>' +
+                            '<td>' + inviteList[i].status + '</td>' +
+                            '</tr>'
+                    }
+
+                    $('#tb-1').html(trhead+trbody)
+
+
                 },
                 error: function (data) {
                     alert(data.msg)
-                    window.location.href = "/ynbocfollow/yonghu/index.html";
+                    window.location.href = "/ynbocfollow/user/getAuthLink?from=user";
                 }
             })
 
@@ -92,7 +119,6 @@
                             $(".jiangjin_bg").show();
                             window.location.href = data.data.ljjUrl;
 
-
                         }
                     },
                     error: function (data) {
@@ -109,6 +135,10 @@
 
             $(".close").click(function () {
                 $(".huodongguize_bg").hide();
+                $(".mingxi_bg").hide();
+            });
+            $("#mingxi").click(function () {
+                $(".mingxi_bg").show();
             });
 
             $(".wodejiangpin").click(function () {
@@ -141,15 +171,18 @@
                 })
             });
 
-            $(".yaoqingli").click(function () {
+            $("#choujiang").click(function () {
                 if (surplusNumber === 0) {
                     alert("暂时没有抽奖次数,快去邀请吧！")
+                    return;
                 } else {
                     window.location.href = "/ynbocfollow/yonghu/extract.html?surplusNumber=" + surplusNumber;
                 }
             });
 
-        });</script>
+        });
+
+    </script>
 </head>
 
 <body style="background-color:#ceedf3">
@@ -170,10 +203,15 @@
 </div>
 <div class="step">
     <p><a href="javascript:void(0)" id="jiangjin"><img src="images/index1.png"/></a></p>
-    <div class="yaoqingli"><a href="#"><img src="images/index2.png"/>
+    <div class="yaoqingli"><img src="images/index2.png"/>
         <div class="cishu" id="surplusNumber">3</div>
-    </a></div>
-    <p><a href="/ynbocfollow/yonghu/fenxiang/xuanze.html"><img src="images/index3.png"/></a></p>
+        <div class="yaoqingli_caozuo">
+            <p><a href="javascript:void(0)" id="choujiang"><img src="images/choujiang.png"/></a></p>
+            <p><a href="javascript:void(0)" id="mingxi"><img src="images/mingxi.png"/></a></p>
+            <p id="invitTotal">您已累计邀请20人</p>
+        </div>
+    </div>
+    <p><a href="./fenxiang/xuanze.html"><img src="images/index3.png"/></a></p>
 </div>
 <div class="banquan2">
     <p>本活动由第三方公司提供技术支持，如有疑问
@@ -219,13 +257,89 @@
 <!--弹窗3-->
 <!--弹窗3-->
 <div class="jiangjin_bg" style="display:none;">
-    <div class="jiangjin_img">
-
-        <img src="images/jiangjin.png">
+    <div class="jiangjin_img"><img src="images/jiangjin.png">
         <div class="jiangjin_txt">￥<strong id="amount">88.88</strong></div>
         <div class="jiangjin_but"><a href="#"><img src="images/chakan.png" class="hide"/></a></div>
     </div>
     <div class="but_bg"><img src="images/close3.png" class="hide"></div>
+</div>
+<!--弹窗3-->
+<!--弹窗3-->
+<div class="mingxi_bg" style="display:none;">
+    <div class="huodongguize">
+        <div class="huodongguize_img"><img src="images/mingxi_bg.png"/></div>
+        <div class="huodongguize_c">
+            <table width="100%" border="0" class="tb" id="tb-1">
+                <tr>
+                    <td style="background-color:#ffcecc; color:#d40f22; font-weight:bold">时间</td>
+                    <td style="background-color:#ffcecc; color:#d40f22; font-weight:bold">昵称</td>
+                    <td style="background-color:#ffcecc; color:#d40f22; font-weight:bold">状态</td>
+                </tr>
+                <tr>
+                    <td>2021-05-03 12:00:22</td>
+                    <td>糊里糊涂糊涂鬼</td>
+                    <td>已关注</td>
+                </tr>
+                <tr>
+                    <td>2021-05-03 12:00:22</td>
+                    <td>糊里糊涂糊涂鬼</td>
+                    <td><strong>已领奖</strong></td>
+                </tr>
+                <tr>
+                    <td>2021-05-03 12:00:22</td>
+                    <td>糊里糊涂糊涂鬼</td>
+                    <td>已关注</td>
+                </tr>
+                <tr>
+                    <td>2021-05-03 12:00:22</td>
+                    <td>糊里糊涂糊涂鬼</td>
+                    <td><strong>已领奖</strong></td>
+                </tr>
+                <tr>
+                    <td>2021-05-03 12:00:22</td>
+                    <td>糊里糊涂糊涂鬼</td>
+                    <td>已关注</td>
+                </tr>
+                <tr>
+                    <td>2021-05-03 12:00:22</td>
+                    <td>糊里糊涂糊涂鬼</td>
+                    <td><strong>已领奖</strong></td>
+                </tr>
+                <tr>
+                    <td>2021-05-03 12:00:22</td>
+                    <td>糊里糊涂糊涂鬼</td>
+                    <td>已关注</td>
+                </tr>
+                <tr>
+                    <td>2021-05-03 12:00:22</td>
+                    <td>糊里糊涂糊涂鬼</td>
+                    <td><strong>已领奖</strong></td>
+                </tr>
+                <tr>
+                    <td>2021-05-03 12:00:22</td>
+                    <td>糊里糊涂糊涂鬼</td>
+                    <td>已关注</td>
+                </tr>
+                <tr>
+                    <td>2021-05-03 12:00:22</td>
+                    <td>糊里糊涂糊涂鬼</td>
+                    <td><strong>已领奖</strong></td>
+                </tr>
+                <tr>
+                    <td>2021-05-03 12:00:22</td>
+                    <td>糊里糊涂糊涂鬼</td>
+                    <td>已关注</td>
+                </tr>
+                <tr>
+                    <td>2021-05-03 12:00:22</td>
+                    <td>糊里糊涂糊涂鬼</td>
+                    <td><strong>已领奖</strong></td>
+                </tr>
+            </table>
+
+        </div>
+        <div class="close"><img src="images/close3.png"></div>
+    </div>
 </div>
 <!--弹窗3-->
 </body>
