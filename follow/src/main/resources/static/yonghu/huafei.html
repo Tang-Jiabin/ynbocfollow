@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>秒杀活动</title>
+    <title>我的奖品</title>
     <link type="text/css" rel="stylesheet" href="css/miaosha.css"/>
     <link type="text/css" rel="stylesheet" href="css/css.css"/>
     <script type="text/javascript" src="js/jquery1.42.min.js"></script>
@@ -30,9 +30,11 @@
                         let prizeTime = data.data.recordsDate;
                         let prizeName = data.data.prizeName;
                         let prizeImg = data.data.prizeImg;
+                        let phone = data.data.phone;
                         let prizeStatus = data.data.status;
                         $("#prizeTime").html("时间：" + prizeTime);
                         $("#prizeName").html(prizeName);
+                        $("#phone").attr("placeholder",phone);
                         $("#prizeImg").attr("src", prizeImg);
                         let status = "已领取";
                         if(prizeStatus === 1){
@@ -58,7 +60,7 @@
                 console.log("提交表单")
 
                 let recordsId = GetQueryString("recordsId");
-                let phone = $("#phone").val();
+                let phone = $("#phone").attr("placeholder");
 
                 $.ajax({
                     url: '/ynbocfollow/user/getUserInfo',
@@ -116,7 +118,7 @@
     </div>
     <div class="xiangqing_t">领取规则</div>
     <div class="chongzhi">
-        <input id="phone" name="" type="text" placeholder="请输入充值手机号" class="chongzhi_txt"><input name="提交" type="submit" value="提交"
+        <input id="phone" name="" type="text" placeholder="请输入充值手机号" class="chongzhi_txt" readonly="readonly"><input name="提交" type="submit" value="提交"
                                                                                       class="chongzhi_but" id="tijiao">
         <div class="clear"></div>
     </div>
